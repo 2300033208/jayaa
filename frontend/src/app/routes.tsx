@@ -1,11 +1,12 @@
 import type { RouteObject } from 'react-router'
+import { Navigate } from 'react-router'
 import { AppShell } from '../components/layout/AppShell'
 import { RouteFallback } from '../components/layout/RouteFallback'
 import { SessionGate } from '../components/layout/SessionGate'
 
 /** Pages are code-split with the router's native lazy loading. Everything but sign-in needs a session. */
 export const routes: RouteObject[] = [
-  { path: 'sign-in', HydrateFallback: RouteFallback, lazy: async () => ({ Component: (await import('../pages/SignIn')).default }) },
+  { path: 'sign-in', element: <Navigate to="/" replace /> },
   {
     element: <SessionGate />,
     HydrateFallback: RouteFallback,

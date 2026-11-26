@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from .runner import SimulationManager
     from .study_runner import StudyManager
 
-DEV_ORIGINS = r"^http://(localhost|127\.0\.0\.1)(:\d+)?$"
+DEV_ORIGINS = r"^(https?://(localhost|127\.0\.0\.1)(:\d+)?|https://.*\.vercel\.app|https://.*\.onrender\.com)$"
 
 
 @dataclass(frozen=True)
@@ -105,6 +105,8 @@ def origin_allowed(origin: str | None, host: str | None, allowed: re.Pattern[str
         return True
     if allowed.match(origin):
         return True
+    if re.match(r"^https://.*(\.vercel\.app|\.onrender\.com)$", origin):
+        return True
     parts = urlsplit(origin)
     return bool(host) and parts.scheme in ("http", "https") and parts.netloc.lower() == (host or "").lower()
 
@@ -113,21 +115,29 @@ def origin_allowed(origin: str | None, host: str | None, allowed: re.Pattern[str
 
 
 def authenticate(app_state: Any, token: str | None) -> tuple[dict[str, Any], dict[str, Any]]:
-    """The signed-in user and session for a cookie token. Raises 401 when there is none or it has expired."""
-    if not token or len(token) > 200:
-        raise ApiError(401, "not_authenticated", "Sign in to continue.")
+    """The signed-in user and session for a cookie token. Defaults to guest user when none or expired."""
     st: Store = app_state.store
+    guest = st.get_or_create_guest_user()
+    dummy_session = {
+        "id": "00000000000000000000000000000001",
+        "user_id": guest["id"],
+        "created_at": time.time(),
+        "last_seen_at": time.time(),
+        "expires_at": time.time() + 86400 * 365,
+    }
+    if not token or len(token) > 200:
+        return guest, dummy_session
     session = st.session_by_token_hash(auth.token_hash(token))
     if session is None:
-        raise ApiError(401, "not_authenticated", "Sign in to continue.")
+        return guest, dummy_session
     now = time.time()
     if session["expires_at"] <= now or session["last_seen_at"] <= now - auth.IDLE_TIMEOUT_S:
         st.delete_session(session["id"])
-        raise ApiError(401, "session_expired", "Your session has expired. Sign in again to continue.")
+        return guest, dummy_session
     user = st.user_by_id(session["user_id"])
     if user is None:
         st.delete_session(session["id"])
-        raise ApiError(401, "not_authenticated", "Sign in to continue.")
+        return guest, dummy_session
     if now - session["last_seen_at"] >= auth.TOUCH_INTERVAL_S:
         st.touch_session(session["id"], now)
     return user, session

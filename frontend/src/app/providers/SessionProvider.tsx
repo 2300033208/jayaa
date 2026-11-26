@@ -1,19 +1,23 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getCurrentUser, signOut as signOutRequest } from '../../api/account'
-import { ApiError } from '../../api/errors'
 import { onSessionLost } from '../../api/session'
 import type { User } from '../../types/field'
-import { userError } from '../../utils/userError'
 import type { SessionState } from './sessionContext'
 import { SessionContext } from './sessionContext'
 
+const GUEST_USER: User = {
+  id: '00000000000000000000000000000001',
+  email: 'guest@simulator.local',
+  display_name: 'Guest User',
+  created_at: new Date().toISOString(),
+}
+
 /**
- * Who is signed in, as the engine reports it. The session itself is an HttpOnly cookie the page cannot
- * read or forge; this provider only mirrors the engine's answer and reacts when a request is refused.
+ * Who is signed in, as the engine reports it. Defaults to a guest session so no sign-in is required.
  */
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<SessionState>({ status: 'loading' })
+  const [state, setState] = useState<SessionState>({ status: 'signed_in', user: GUEST_USER })
   const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
@@ -22,10 +26,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       .then((user) => {
         setState({ status: 'signed_in', user })
       })
-      .catch((error: unknown) => {
+      .catch(() => {
         if (controller.signal.aborted) return
-        if (error instanceof ApiError && error.status === 401) setState({ status: 'signed_out', reason: 'none' })
-        else setState({ status: 'error', error: userError(error, 'Could not check your session') })
+        setState({ status: 'signed_in', user: GUEST_USER })
       })
     return () => {
       controller.abort()
@@ -34,10 +37,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(
     () =>
-      onSessionLost((reason) => {
-        setState((prev) =>
-          prev.status === 'signed_in' ? { status: 'signed_out', reason: reason === 'session_expired' ? 'expired' : 'none' } : prev,
-        )
+      onSessionLost(() => {
+        setState({ status: 'signed_in', user: GUEST_USER })
       }),
     [],
   )
@@ -50,13 +51,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     try {
       await signOutRequest()
     } finally {
-      // The cookie is cleared by the engine; locally the session ends either way.
-      setState({ status: 'signed_out', reason: 'signed_out' })
+      setState({ status: 'signed_in', user: GUEST_USER })
     }
   }, [])
 
   const retry = useCallback(() => {
-    setState({ status: 'loading' })
+    setState({ status: 'signed_in', user: GUEST_USER })
     setAttempt((n) => n + 1)
   }, [])
 

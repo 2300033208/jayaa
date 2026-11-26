@@ -24,6 +24,8 @@ from .serialization import dumps
 _ID_RE = re.compile(r"^[0-9a-f]{32}$")
 COMPRESSION_LEVEL = 1  # measurement floats compress little; favour speed
 CODE_ATTEMPTS = 5
+GUEST_USER_ID = "00000000000000000000000000000001"
+GUEST_EMAIL = "guest@simulator.local"
 
 
 def utc_now() -> str:
@@ -109,6 +111,26 @@ class Store:
         with self._session() as s:
             row = s.get(db.User, user_id)
             return _user_dict(row) if row else None
+
+    def get_or_create_guest_user(self) -> dict[str, Any]:
+        with self._session() as s:
+            row = s.get(db.User, GUEST_USER_ID)
+            if row is not None:
+                return _user_dict(row)
+        now = utc_now()
+        row = db.User(id=GUEST_USER_ID, email=GUEST_EMAIL, display_name="Guest User", password_hash="none",
+                      created_at=now, password_changed_at=now)
+        try:
+            with self._session() as s, s.begin():
+                s.merge(row)
+        except Exception:
+            pass
+        with self._session() as s:
+            row = s.get(db.User, GUEST_USER_ID)
+            if row is not None:
+                return _user_dict(row)
+        return {"id": GUEST_USER_ID, "email": GUEST_EMAIL, "display_name": "Guest User", "password_hash": "none",
+                "created_at": now, "password_changed_at": now}
 
     def set_password(self, user_id: str, password_hash: str) -> None:
         with self._session() as s, s.begin():

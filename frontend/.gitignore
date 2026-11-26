@@ -1,2 +1,7 @@
-# Commit the built frontend so Render can serve it without needing Node.js
+node_modules
+test-results
+playwright-report
+coverage
+e2e-logs
+# Allow dist to be committed for Render static serving
 !dist
