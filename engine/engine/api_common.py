@@ -34,6 +34,7 @@ class Settings:
     allow_signup: bool
     allowed_origins: re.Pattern[str]
     cookie_secure: Literal["auto", "always", "never"]
+    cookie_samesite: Literal["strict", "lax", "none"]
     static_dir: Path | None
 
 
@@ -45,6 +46,9 @@ def load_settings() -> Settings:
     secure = os.environ.get("ENGINE_COOKIE_SECURE", "auto")
     if secure not in ("auto", "always", "never"):
         raise RuntimeError("ENGINE_COOKIE_SECURE must be auto, always or never")
+    samesite = os.environ.get("ENGINE_COOKIE_SAMESITE", "strict")
+    if samesite not in ("strict", "lax", "none"):
+        raise RuntimeError("ENGINE_COOKIE_SAMESITE must be strict, lax or none")
     static = os.environ.get("ENGINE_STATIC_DIR")
     return Settings(
         data_dir=data_dir,
@@ -52,6 +56,7 @@ def load_settings() -> Settings:
         allow_signup=os.environ.get("ENGINE_ALLOW_SIGNUP", "1") == "1",
         allowed_origins=re.compile(os.environ.get("ENGINE_ALLOWED_ORIGINS", DEV_ORIGINS)),
         cookie_secure=secure,  # type: ignore[arg-type]
+        cookie_samesite=samesite,  # type: ignore[arg-type]
         static_dir=Path(static).resolve() if static else None,
     )
 

@@ -53,11 +53,11 @@ def _start_session(request: Request, response: Response, user: dict[str, Any]) -
     store(request).create_session(user["id"], auth.token_hash(token), now, now + auth.ABSOLUTE_TIMEOUT_S,
                                   request.headers.get("user-agent", ""))
     response.set_cookie(auth.SESSION_COOKIE, token, max_age=int(auth.ABSOLUTE_TIMEOUT_S), path="/", httponly=True,
-                        samesite="strict", secure=_secure(request))
+                        samesite=settings(request).cookie_samesite, secure=_secure(request))
 
 
 def _clear_cookie(request: Request, response: Response) -> None:
-    response.delete_cookie(auth.SESSION_COOKIE, path="/", httponly=True, samesite="strict", secure=_secure(request))
+    response.delete_cookie(auth.SESSION_COOKIE, path="/", httponly=True, samesite=settings(request).cookie_samesite, secure=_secure(request))
 
 
 @router.get("/config")
