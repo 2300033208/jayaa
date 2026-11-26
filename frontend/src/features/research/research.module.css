@@ -1,0 +1,82 @@
+/* Validation page: published benchmarks and related work. */
+.citation {
+  font-size: 13px;
+  color: var(--ink-2);
+  margin-bottom: var(--space-3);
+  max-width: 100ch;
+}
+
+.tableWrap {
+  position: relative; /* contains absolutely positioned descendants */
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  padding: 8px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.table thead th {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.table tbody th {
+  font-weight: 500;
+  min-width: 220px;
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table td:global(.mono) {
+  white-space: nowrap;
+}
+
+.wrap {
+  min-width: 260px;
+  max-width: 52ch;
+}
+
+.note {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+  max-width: 60ch;
+}
+
+.result {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--good-ink);
+  white-space: nowrap;
+}
+
+.result[data-passed='false'] {
+  color: var(--critical-ink);
+}
+
+.result svg {
+  width: 16px;
+  height: 16px;
+}

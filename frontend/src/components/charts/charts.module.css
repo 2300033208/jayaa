@@ -1,0 +1,185 @@
+.frame {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.titles {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.subtitle {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  max-width: 70ch;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.body {
+  position: relative;
+  min-width: 0;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+
+.plotHost {
+  position: relative;
+  width: 100%;
+}
+
+.plot {
+  width: 100%;
+}
+
+.chartLoading {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-m);
+  background: linear-gradient(90deg, var(--surface-sunken) 0%, var(--line) 50%, var(--surface-sunken) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.chartFallback {
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--ink-2);
+  font-size: 13px;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-m);
+}
+
+.empty {
+  display: grid;
+  place-content: center;
+  gap: 4px;
+  text-align: center;
+  padding: var(--space-5);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-m);
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.empty strong {
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.footnote {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.footnote strong {
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------------ table view */
+
+.tableWrap {
+  position: relative; /* contains absolutely positioned descendants (e.g. visually-hidden labels) */
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.table caption {
+  caption-side: bottom;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.table th,
+.table td {
+  padding: 6px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-sunken);
+  font-weight: 600;
+  color: var(--ink-2);
+  font-size: 12px;
+}
+
+.table td {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.pagerButtons {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.legendKey {
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  vertical-align: middle;
+  margin-right: 6px;
+}

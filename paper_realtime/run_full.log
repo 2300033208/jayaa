@@ -1,0 +1,36 @@
+building tide table ...
+  (49, 113760) in 5.0 s; rms station-centre tide 3.84e-19
+flicker ADEV / floor: {'1 h': 1.00322915039706, '5 h': 1.0064653232707177, '10 h': 1.0064125316333812, '24 h': 1.0079940099830718, '72 h': 1.0005169251649615}
+MF SNR: {'C1': 0.25807419242891566, 'C2': 1.5431242306746307, 'C3': 5.35365233852073}
+sequential detection ...
+  C1 serpentine   FA=0.044 Pd=0.053
+  C1 coarse-first FA=0.061 Pd=0.068
+  C2 serpentine   FA=0.045 Pd=0.091
+  C2 coarse-first FA=0.060 Pd=0.138
+  C3 serpentine   FA=0.048 Pd=0.972
+  C3 coarse-first FA=0.049 Pd=0.985
+scenarios ...
+  S0: {'label': 'Batch model of Sec. IX (independent noise)', 'fa': 0.056666666666666664, 'pd': 0.995, 'median_day': 9.416666666666666, 'horiz_m': 600.3625748793013, 'depth_m': 976.3774487475689, 'mass_pct': 42.385292325387084, 'at_bound_pct': 15.333333333333332}
+  S1: {'label': 'Time-domain noise (white + continuous flicker)', 'fa': 0.048, 'pd': 0.977, 'median_day': 9.916666666666666, 'horiz_m': 699.8510933010224, 'depth_m': 1008.3901122279981, 'mass_pct': 42.606257588969555, 'at_bound_pct': 20.0}
+  S2: {'label': 'S1 + link outages (about 4 % loss)', 'fa': 0.050333333333333334, 'pd': 0.955, 'median_day': 10.416666666666666, 'horiz_m': 775.0884731102614, 'depth_m': 1144.561754317642, 'mass_pct': 44.11967606647437, 'at_bound_pct': 19.333333333333332}
+  S3: {'label': 'S1 + differential tide, uncorrected', 'fa': 0.06133333333333333, 'pd': 0.966, 'median_day': 9.416666666666666, 'horiz_m': 700.0582655553915, 'depth_m': 1029.3012797659055, 'mass_pct': 46.303823270178626, 'at_bound_pct': 18.333333333333332}
+  S4: {'label': 'S1 + tide corrected (5 % residual)', 'fa': 0.048, 'pd': 0.977, 'median_day': 9.916666666666666, 'horiz_m': 714.6211065454506, 'depth_m': 986.3211634412439, 'mass_pct': 44.00414761335363, 'at_bound_pct': 16.666666666666664}
+  S5: {'label': 'S1 + drift 1e-19/day, offset only', 'fa': 0.997, 'pd': 1.0, 'median_day': 14.416666666666666, 'horiz_m': 3811.819094497969, 'depth_m': 7999.999999999996, 'mass_pct': 1383.5742372644095, 'at_bound_pct': 84.33333333333334}
+  S6: {'label': 'S1 + drift, drift fitted in time', 'fa': 0.050666666666666665, 'pd': 0.981, 'median_day': 11.916666666666666, 'horiz_m': 807.9745689900698, 'depth_m': 1018.7506618143348, 'mass_pct': 43.383067673652, 'at_bound_pct': 19.333333333333332}
+  S7: {'label': 'All of S2, S4 and S6', 'fa': 0.06166666666666667, 'pd': 0.976, 'median_day': 11.916666666666666, 'horiz_m': 729.9572715777208, 'depth_m': 971.9333359947799, 'mass_pct': 38.542198816675246, 'at_bound_pct': 20.666666666666668}
+convergence ...
+  S1 serpentine: depth median at 49 = 954
+  S1 coarse-first: depth median at 49 = 988
+  S7 serpentine: depth median at 49 = 992
+  S7 coarse-first: depth median at 49 = 1035
+tide study ...
+  100 km: {'2': 3.923646955490338e-19, '10': 2.171980938006713e-19, '12.42': 1.8712669073780115e-19, '24.84': 1.3279010373677763e-19, 'peak_to_peak': 2.037100505865829e-18}
+monitoring ...
+  C2: gaps {'0': 0.9887133275988044, '100': 1.2507371422515479, '365': 1.4555067334560936, '730': 1.5794588256833157}  Pd(1x)=0.513
+  C3: gaps {'0': 0.9752116584625388, '100': 1.2090651767430947, '365': 1.4249407575604425, '730': 1.523897418013699}  Pd(1x)=0.501
+showcase stream ...
+showcase: {'order': 'coarse-first', 'class_': 'C3', 'start': '2027-02-07', 'detect_station': 28, 'detect_day': 13.721715366524672, 'final': [494.88238326351535, -256.2333175136277, 1334.6544809728623, 5.633680303549231], 'final_errors': (318.5834775785889, 665.3455190271377, 20.299727279172476), 'loss_pct': 4.337868480725627, 'packet_us_median': 0.30000046535860747, 'update_ms_median': 46.10004999994999, 'update_ms_max': 94.10050000042247, 'n_packets': 168748}
+C:\Users\chowd\Downloads\Jaivardhan Project\paper_realtime\realtime_sim.py:604: RuntimeWarning: Mean of empty slice
+  mm = np.nanmean(raw[: raw.size // blk * blk].reshape(-1, blk), 1)
+monitoring showcase ...
+done

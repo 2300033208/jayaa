@@ -1,0 +1,347 @@
+{
+  "schema_version": 1,
+  "default": "regional-field",
+  "note": "Expected outcomes were checked with the engine over eight noise seeds each.",
+  "scenarios": [
+    {
+      "id": "regional-field",
+      "title": "Regional density anomaly · today's field clocks",
+      "summary": "A large buried mafic intrusion (Δρ = +300 kg/m³, centre 10 km deep) surveyed at 81 stations 5 km apart with transportable ⁸⁷Sr clocks at field-demonstrated performance. About a month of fieldwork.",
+      "expectation": "Usually detected (about 4–5σ). Mass and depth trade off against each other, so their intervals stay wide.",
+      "config": {
+        "name": "Regional density anomaly · today's field clocks",
+        "environment": {
+          "earth_model": "wgs84",
+          "latitude_deg": 17.385,
+          "longitude_deg": 78.487,
+          "elevation_m": 540,
+          "terrain": "flat",
+          "terrain_relief_m": 0,
+          "terrain_model_id": null,
+          "terrain_density_kg_m3": 2670,
+          "terrain_density_assumed_kg_m3": 2670,
+          "tides": "modelled"
+        },
+        "bodies": [
+          {
+            "id": "body-1",
+            "anomaly_type": "dense",
+            "geometry": "sphere",
+            "density_contrast_kg_m3": 300,
+            "mass_kg": 640000000000000.0,
+            "depth_m": 10000,
+            "x_m": 3000,
+            "y_m": -2000
+          }
+        ],
+        "sensor": {
+          "mode": "local_reference",
+          "clock_species": "sr",
+          "performance_class": "field",
+          "reference_frequency_hz": 429228004229873.0,
+          "bbr_sensitivity_per_k": 7.3e-17,
+          "measurement_interval_s": 10000,
+          "stability_1s": 5e-16,
+          "systematic_uncertainty": 1e-17,
+          "uptime_percent": 50,
+          "reference_distance_km": 0
+        },
+        "noise": {
+          "measurement_noise": 1e-19,
+          "frequency_drift_per_hour": 1e-21,
+          "environmental_noise": 3e-19,
+          "temperature_fluctuation_k": 0.01,
+          "vibration_m": 0.0005,
+          "station_height_uncertainty_m": 0.01,
+          "seed": 20260926,
+          "tide_residual_percent": 2
+        },
+        "survey": {
+          "width_m": 40000,
+          "length_m": 40000,
+          "spacing_m": 5000,
+          "sensor_height_m": 1,
+          "setup_time_s": 14400,
+          "start_date": "2027-03-01",
+          "pattern": "serpentine"
+        },
+        "inversion": {
+          "source_count": 1,
+          "bootstrap_samples": 200
+        }
+      }
+    },
+    {
+      "id": "ore-field",
+      "title": "Mineral ore body · today's field clocks",
+      "summary": "A massive sulphide body (5 × 10¹² kg, Δρ = +1500 kg/m³, centre 1.5 km deep) on an 8 km grid of 81 stations, with transportable clocks at field-demonstrated performance.",
+      "expectation": "Not detectable: the per-station error (about 1.2 × 10⁻¹⁷) is five times the peak signal.",
+      "config": {
+        "name": "Mineral ore body · today's field clocks",
+        "environment": {
+          "earth_model": "wgs84",
+          "latitude_deg": 17.385,
+          "longitude_deg": 78.487,
+          "elevation_m": 540,
+          "terrain": "flat",
+          "terrain_relief_m": 0,
+          "terrain_model_id": null,
+          "terrain_density_kg_m3": 2670,
+          "terrain_density_assumed_kg_m3": 2670,
+          "tides": "modelled"
+        },
+        "bodies": [
+          {
+            "id": "body-1",
+            "anomaly_type": "dense",
+            "geometry": "sphere",
+            "density_contrast_kg_m3": 1500,
+            "mass_kg": 5000000000000.0,
+            "depth_m": 1500,
+            "x_m": 400,
+            "y_m": -300
+          }
+        ],
+        "sensor": {
+          "mode": "local_reference",
+          "clock_species": "sr",
+          "performance_class": "field",
+          "reference_frequency_hz": 429228004229873.0,
+          "bbr_sensitivity_per_k": 7.3e-17,
+          "measurement_interval_s": 10000,
+          "stability_1s": 5e-16,
+          "systematic_uncertainty": 1e-17,
+          "uptime_percent": 50,
+          "reference_distance_km": 0
+        },
+        "noise": {
+          "measurement_noise": 1e-19,
+          "frequency_drift_per_hour": 1e-21,
+          "environmental_noise": 3e-19,
+          "temperature_fluctuation_k": 0.01,
+          "vibration_m": 0.0005,
+          "station_height_uncertainty_m": 0.01,
+          "seed": 20260926,
+          "tide_residual_percent": 2
+        },
+        "survey": {
+          "width_m": 8000,
+          "length_m": 8000,
+          "spacing_m": 1000,
+          "sensor_height_m": 1,
+          "setup_time_s": 14400,
+          "start_date": "2027-03-01",
+          "pattern": "serpentine"
+        },
+        "inversion": {
+          "source_count": 1,
+          "bootstrap_samples": 200
+        }
+      }
+    },
+    {
+      "id": "ore-laboratory",
+      "title": "Mineral ore body · laboratory-grade clocks",
+      "summary": "The same ore body and survey, assuming today's best laboratory clock performance could be taken into the field.",
+      "expectation": "Marginal: typically 0–3σ, not reliably detected. Station height knowledge (1 cm) and clock systematics limit it.",
+      "config": {
+        "name": "Mineral ore body · laboratory-grade clocks",
+        "environment": {
+          "earth_model": "wgs84",
+          "latitude_deg": 17.385,
+          "longitude_deg": 78.487,
+          "elevation_m": 540,
+          "terrain": "flat",
+          "terrain_relief_m": 0,
+          "terrain_model_id": null,
+          "terrain_density_kg_m3": 2670,
+          "terrain_density_assumed_kg_m3": 2670,
+          "tides": "modelled"
+        },
+        "bodies": [
+          {
+            "id": "body-1",
+            "anomaly_type": "dense",
+            "geometry": "sphere",
+            "density_contrast_kg_m3": 1500,
+            "mass_kg": 5000000000000.0,
+            "depth_m": 1500,
+            "x_m": 400,
+            "y_m": -300
+          }
+        ],
+        "sensor": {
+          "mode": "local_reference",
+          "clock_species": "sr",
+          "performance_class": "laboratory",
+          "reference_frequency_hz": 429228004229873.0,
+          "bbr_sensitivity_per_k": 7.3e-17,
+          "measurement_interval_s": 10000,
+          "stability_1s": 5e-17,
+          "systematic_uncertainty": 1e-18,
+          "uptime_percent": 90,
+          "reference_distance_km": 0
+        },
+        "noise": {
+          "measurement_noise": 1e-19,
+          "frequency_drift_per_hour": 1e-21,
+          "environmental_noise": 3e-19,
+          "temperature_fluctuation_k": 0.003,
+          "vibration_m": 0.0005,
+          "station_height_uncertainty_m": 0.01,
+          "seed": 20260926,
+          "tide_residual_percent": 2
+        },
+        "survey": {
+          "width_m": 8000,
+          "length_m": 8000,
+          "spacing_m": 1000,
+          "sensor_height_m": 1,
+          "setup_time_s": 14400,
+          "start_date": "2027-03-01",
+          "pattern": "serpentine"
+        },
+        "inversion": {
+          "source_count": 1,
+          "bootstrap_samples": 200
+        }
+      }
+    },
+    {
+      "id": "ore-projected",
+      "title": "Mineral ore body · projected clocks",
+      "summary": "The same ore body on a dense 250 m grid (1089 stations) with projected next-generation clocks and millimetre station heights.",
+      "expectation": "Clearly detected (above 20σ); depth and mass are recovered with the truth inside the 95 % intervals.",
+      "config": {
+        "name": "Mineral ore body · projected clocks",
+        "environment": {
+          "earth_model": "wgs84",
+          "latitude_deg": 17.385,
+          "longitude_deg": 78.487,
+          "elevation_m": 540,
+          "terrain": "flat",
+          "terrain_relief_m": 0,
+          "terrain_model_id": null,
+          "terrain_density_kg_m3": 2670,
+          "terrain_density_assumed_kg_m3": 2670,
+          "tides": "modelled"
+        },
+        "bodies": [
+          {
+            "id": "body-1",
+            "anomaly_type": "dense",
+            "geometry": "sphere",
+            "density_contrast_kg_m3": 1500,
+            "mass_kg": 5000000000000.0,
+            "depth_m": 1500,
+            "x_m": 400,
+            "y_m": -300
+          }
+        ],
+        "sensor": {
+          "mode": "local_reference",
+          "clock_species": "sr",
+          "performance_class": "projected",
+          "reference_frequency_hz": 429228004229873.0,
+          "bbr_sensitivity_per_k": 7.3e-17,
+          "measurement_interval_s": 1000,
+          "stability_1s": 1e-17,
+          "systematic_uncertainty": 1e-19,
+          "uptime_percent": 95,
+          "reference_distance_km": 0
+        },
+        "noise": {
+          "measurement_noise": 1e-19,
+          "frequency_drift_per_hour": 1e-21,
+          "environmental_noise": 3e-19,
+          "temperature_fluctuation_k": 0.003,
+          "vibration_m": 0.0005,
+          "station_height_uncertainty_m": 0.001,
+          "seed": 20260926,
+          "tide_residual_percent": 2
+        },
+        "survey": {
+          "width_m": 8000,
+          "length_m": 8000,
+          "spacing_m": 250,
+          "sensor_height_m": 1,
+          "setup_time_s": 600,
+          "start_date": "2027-03-01",
+          "pattern": "serpentine"
+        },
+        "inversion": {
+          "source_count": 1,
+          "bootstrap_samples": 200
+        }
+      }
+    },
+    {
+      "id": "aquifer-projected",
+      "title": "Groundwater aquifer · projected clocks",
+      "summary": "A water-saturated sediment body (porosity water adds Δρ ≈ +250 kg/m³, 1.4 × 10¹¹ kg, top 400 m deep) on a 200 m grid with projected clocks.",
+      "expectation": "Below sensitivity even for projected clocks: the peak signal (1.4 × 10⁻¹⁹) is a quarter of the per-station noise.",
+      "config": {
+        "name": "Groundwater aquifer · projected clocks",
+        "environment": {
+          "earth_model": "wgs84",
+          "latitude_deg": 17.385,
+          "longitude_deg": 78.487,
+          "elevation_m": 540,
+          "terrain": "flat",
+          "terrain_relief_m": 0,
+          "terrain_model_id": null,
+          "terrain_density_kg_m3": 2670,
+          "terrain_density_assumed_kg_m3": 2670,
+          "tides": "modelled"
+        },
+        "bodies": [
+          {
+            "id": "body-1",
+            "anomaly_type": "dense",
+            "geometry": "slab",
+            "density_contrast_kg_m3": 250,
+            "mass_kg": 144000000000.0,
+            "depth_m": 600,
+            "x_m": -300,
+            "y_m": 200
+          }
+        ],
+        "sensor": {
+          "mode": "local_reference",
+          "clock_species": "sr",
+          "performance_class": "projected",
+          "reference_frequency_hz": 429228004229873.0,
+          "bbr_sensitivity_per_k": 7.3e-17,
+          "measurement_interval_s": 1000,
+          "stability_1s": 1e-17,
+          "systematic_uncertainty": 1e-19,
+          "uptime_percent": 95,
+          "reference_distance_km": 0
+        },
+        "noise": {
+          "measurement_noise": 1e-19,
+          "frequency_drift_per_hour": 1e-21,
+          "environmental_noise": 3e-19,
+          "temperature_fluctuation_k": 0.003,
+          "vibration_m": 0.0005,
+          "station_height_uncertainty_m": 0.001,
+          "seed": 20260926,
+          "tide_residual_percent": 2
+        },
+        "survey": {
+          "width_m": 6000,
+          "length_m": 6000,
+          "spacing_m": 200,
+          "sensor_height_m": 1,
+          "setup_time_s": 600,
+          "start_date": "2027-03-01",
+          "pattern": "serpentine"
+        },
+        "inversion": {
+          "source_count": 1,
+          "bootstrap_samples": 200
+        }
+      }
+    }
+  ]
+}

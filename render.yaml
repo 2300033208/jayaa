@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: atomic-gravity-engine
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r engine/requirements.txt
+    startCommand: python -m uvicorn engine.engine.main:app --host 0.0.0.0 --port $PORT
+    rootDir: .
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: atomic-gravity-db
+          property: connectionString
+      - key: ENGINE_ALLOWED_ORIGINS
+        value: https://your-app.vercel.app   # <-- replace with your Vercel URL
+      - key: ENGINE_DATA_DIR
+        value: /tmp/data
+      - key: PYTHON_VERSION
+        value: 3.12.0
+
+databases:
+  - name: atomic-gravity-db
+    plan: free
+    region: oregon

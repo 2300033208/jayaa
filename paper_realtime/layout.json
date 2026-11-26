@@ -1,0 +1,8 @@
+{
+ "pages": [
+  {"floats": [["t24", "L-top"], ["f24", "R-top"]]},
+  {"floats": [["f26", "F-top"], ["f25", "L-top"]]},
+  {"floats": [["t25", "F-top"], ["f27", "L-top"], ["f28", "R-top"]]},
+  {"floats": [["f30", "F-top"], ["f29", "L-top"], ["t26", "R-top"]]}
+ ]
+}

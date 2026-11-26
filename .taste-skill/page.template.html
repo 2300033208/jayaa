@@ -1,0 +1,816 @@
+<title>Clock vs Gravimeter</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A final-year simulation study: can optical atomic clocks find buried mass? On the same stations a gravimeter is 690 to 13 000 times more sensitive.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,400&family=Albert+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: type-only first screen with the name across the middle; typographic set pieces alternate left, right and full width on one 12-column grid. */
+:root {
+  --bg: #eeecea;
+  --surface: #e4e1dd;
+  --ink: #333231;
+  --muted: #5b5753;
+  --accent: #5c6b54;
+  --accent-ink: #ffffff;
+  --field-1: #cdc3b6;
+  --field-1-ink: #333231;
+  --band: #333231;
+  --band-ink: #eeecea;
+  --band-accent: #b7c6ab;
+
+  --display: "Imbue", "Didot", "Bodoni 72", "Times New Roman", serif;
+  --text: "Albert Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --code: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; /* taste-skill-ignore: only for the literal code in <pre><code> */
+
+  --s-small: 14px;
+  --s-body: 17px;
+  --s-lead: 22px;
+  --s-head: clamp(28px, 2.6vw, 40px);
+  --s-display: clamp(52px, 6.6vw, 108px);
+
+  /* Content stays within 1480px on wide screens; colour bands still run edge to edge. */
+  --gutter-l: max(18px, env(safe-area-inset-left, 0px), calc((100vw - 1480px) / 2));
+  --gutter-r: max(18px, env(safe-area-inset-right, 0px), calc((100vw - 1480px) / 2));
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d1c1b; --surface: #282725; --ink: #ebe8e4; --muted: #a8a39d;
+    --accent: #9fb393; --accent-ink: #141413; --field-1: #3b3631; --field-1-ink: #ebe8e4;
+    --band: #ebe8e4; --band-ink: #1d1c1b; --band-accent: #4d5c45;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1d1c1b; --surface: #282725; --ink: #ebe8e4; --muted: #a8a39d;
+  --accent: #9fb393; --accent-ink: #141413; --field-1: #3b3631; --field-1-ink: #ebe8e4;
+  --band: #ebe8e4; --band-ink: #1d1c1b; --band-accent: #4d5c45;
+  color-scheme: dark;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--s-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, p, ul, ol, figure, blockquote { margin: 0; }
+h2, h3 { text-wrap: balance; font-weight: 400; }
+p { text-wrap: pretty; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease); }
+a:hover { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+img { display: block; max-width: 100%; height: auto; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+
+.wrap {
+  padding-left: var(--gutter-l);
+  padding-right: var(--gutter-r);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 18px;
+}
+.section { padding-block: clamp(72px, 8vw, 136px); }
+.display {
+  font-family: var(--display);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+/* ---------- hero: name across the middle ---------- */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: min(100svh, 880px);
+  padding-block: 18px 24px;
+  gap: 24px;
+}
+.hero-top, .hero-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.hero-lede { max-width: 40ch; font-size: var(--s-lead); line-height: 1.35; }
+.hero-lede strong { font-weight: 500; }
+.button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 14px 22px;
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--s-body);
+  transition: background 0.2s var(--ease), transform 0.15s var(--ease);
+}
+.button:hover { background: var(--accent); color: var(--accent-ink); }
+.button:active { transform: translateY(1px) scale(0.99); }
+.corner-links { display: flex; gap: 20px; font-size: var(--s-small); flex-wrap: wrap; }
+.corner-links a { text-decoration: none; }
+.corner-links a:hover { text-decoration: underline; }
+.hero-bottom { align-items: flex-end; font-size: var(--s-small); color: var(--muted); }
+.hero-name { align-self: center; width: 100%; margin: 0; }
+.name-fit {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: min(9.2vw, 136px);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform-origin: 50% 50%;
+}
+.hero-photo { display: none; }
+
+/* ---------- intro: title, note, facts row ---------- */
+.intro-head { grid-column: 1 / 10; font-family: var(--display); text-transform: uppercase; font-size: var(--s-display); line-height: 0.95; align-self: end; }
+.intro-note { grid-column: 10 / 13; align-self: end; font-size: var(--s-body); }
+.facts {
+  grid-column: 1 / -1;
+  margin-top: 96px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 18px;
+  row-gap: 32px;
+}
+.fact { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.fact b { font-family: var(--display); font-weight: 400; font-size: var(--s-head); line-height: 1; }
+.fact span { font-size: var(--s-small); color: var(--muted); max-width: 24ch; }
+.intro-photo { grid-column: 7 / 13; margin-top: 72px; }
+.intro-photo img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+figcaption { font-size: var(--s-small); color: var(--muted); margin-top: 10px; }
+.intro-said { grid-column: 1 / 7; margin-top: 72px; align-self: start; font-size: var(--s-lead); line-height: 1.4; }
+
+/* ---------- how it works: call and response ---------- */
+.how { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 18px; }
+.how-col { grid-column: 1 / -1; display: grid; gap: 72px; min-width: 0; }
+.how-col h2 { font-size: var(--s-head); font-weight: 500; }
+.ex { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 18px; row-gap: 16px; align-items: start; min-width: 0; }
+.ex > p { grid-column: 1 / 7; }
+.ex > .call { grid-column: 1 / 7; grid-row: 2; }
+.ex > p { font-size: var(--s-lead); font-weight: 500; }
+.call {
+  background: var(--surface);
+  padding: 20px;
+  overflow-x: auto;
+  font-family: var(--code);
+  font-size: var(--s-small);
+  line-height: 1.6;
+  margin: 0;
+}
+.call code { font-family: inherit; white-space: pre; }
+.resp { grid-column: 7 / 13; grid-row: 1 / span 3; min-width: 0; }
+.resp-panel { background: var(--field-1); color: var(--field-1-ink); padding: 20px 22px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; font-size: var(--s-small); }
+.resp-panel b { display: block; font-size: var(--s-lead); font-weight: 500; }
+.resp img { width: 100%; }
+
+/* ---------- picture band ---------- */
+.band { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.band figure { min-width: 0; overflow: hidden; }
+.band img { width: 100%; height: clamp(320px, 38vw, 560px); object-fit: cover; }
+.drift img { transform: scale(1.06); transition: transform 0.1s linear; }
+
+/* ---------- proof: recognition as a table ---------- */
+.proof-head { font-family: var(--display); text-transform: uppercase; font-size: var(--s-display); line-height: 0.92; }
+.proof-head span { display: block; }
+.table-wrap { margin-top: 72px; overflow-x: auto; }
+table.ledger { width: 100%; border-collapse: collapse; font-size: var(--s-body); }
+.ledger th, .ledger td { padding: 14px 18px 14px 0; text-align: left; vertical-align: top; border: 0; }
+.ledger thead th { font-weight: 500; color: var(--muted); font-size: var(--s-small); }
+.ledger tbody tr:nth-child(even) td { background: var(--surface); }
+.ledger td.year { width: 8.333%; padding-left: 12px; font-variant-numeric: tabular-nums; }
+.ledger td.study { width: 41.667%; font-weight: 500; }
+.ledger td.study small { display: block; font-weight: 400; font-size: var(--s-body); margin-top: 2px; }
+.ledger td.where { width: 25%; }
+.ledger thead th:first-child { padding-left: 12px; }
+.ledger td.result { width: 25%; padding-right: 12px; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+.ledger td.result.agree { color: var(--ink); }
+.ledger td.result.agree::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-right: 8px; }
+.ledger tr.gap td { background: transparent !important; padding: 8px; }
+
+/* ---------- showcase: headline you can type ---------- */
+.dial { background: var(--field-1); color: var(--field-1-ink); }
+.dial-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 18px; align-items: center; }
+.dial-left { grid-column: 1 / 7; min-width: 0; }
+.dial-chart { grid-column: 7 / 13; min-width: 0; }
+.dial-chart svg { width: 100%; height: auto; display: block; }
+.dial-chart .axis { stroke: var(--muted); stroke-width: 1; fill: none; }
+.dial-chart .tick { fill: var(--field-1-ink); font-size: 13px; font-family: var(--text); }
+.dial-chart .label { fill: var(--field-1-ink); font-size: 14px; font-family: var(--text); }
+.dial-chart .parity { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 5; fill: none; }
+.dial-chart .line { fill: none; stroke: var(--ink); stroke-width: 2.25; }
+.dial-chart .marker { stroke: var(--accent); stroke-width: 3; }
+.dial-chart .dot { fill: var(--accent); stroke: var(--field-1); stroke-width: 2; }
+.legend { margin-top: 12px; display: grid; gap: 4px; font-size: var(--s-small); list-style: none; padding: 0; }
+.legend li { display: flex; align-items: center; gap: 10px; }
+.legend svg { width: 34px; height: 8px; flex: none; }
+.dial h2 { font-size: var(--s-head); font-weight: 500; margin-bottom: 28px; }
+.dial-line { position: relative; display: flex; align-items: baseline; }
+.dial input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: var(--display);
+  font-size: var(--s-display);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  padding: 0;
+  caret-color: var(--accent);
+  outline: none;
+}
+.dial input:focus-visible { outline: 3px solid var(--accent); outline-offset: 8px; }
+.dial-read { margin-top: 40px; font-size: var(--s-body); max-width: 60ch; }
+.dial-read strong { font-weight: 500; }
+.answer { margin-top: 20px; width: min(760px, 100%); border-collapse: collapse; font-size: var(--s-small); background: var(--bg); color: var(--ink); }
+.answer th, .answer td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--surface); }
+.answer thead th { font-weight: 500; color: var(--muted); font-size: var(--s-small); vertical-align: bottom; }
+.answer td:first-child { white-space: nowrap; }
+.answer td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.answer tr:last-child td { border-bottom: 0; }
+.answer .win { color: var(--accent); font-weight: 500; }
+.answer-wrap { overflow-x: auto; max-width: 100%; }
+.examples { margin-top: 32px; display: flex; gap: 12px 28px; flex-wrap: wrap; font-size: var(--s-body); }
+.examples button {
+  font: inherit; color: inherit; background: none; border: 0; padding: 6px 0; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px;
+  transition: color 0.2s var(--ease), transform 0.15s var(--ease);
+}
+.examples button:hover { color: var(--accent); }
+.examples button:active { transform: translateY(1px); }
+.dial-note { margin-top: 28px; font-size: var(--s-small); color: var(--muted); max-width: 70ch; }
+.dial-error { color: var(--ink); font-weight: 500; }
+
+/* ---------- stats: column aligned on the decimal ---------- */
+.stats-head { grid-column: 1 / 7; align-self: center; font-size: var(--s-head); line-height: 1.1; }
+.stats-head span { display: block; color: var(--muted); }
+.figures { grid-column: 7 / 13; display: grid; gap: 20px; }
+.fig { display: grid; grid-template-columns: 1fr auto 1.4fr; align-items: baseline; column-gap: 0; }
+.fig .whole, .fig .dec { font-family: var(--display); font-size: var(--s-display); line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
+.fig .whole { text-align: right; }
+.fig .dec { text-align: left; min-width: 1.4ch; }
+.fig p { font-size: var(--s-body); padding-left: 20px; max-width: 32ch; }
+.stats-shot { grid-column: 1 / -1; margin-top: 96px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.stats-shot figure { min-width: 0; }
+.stats-shot img { width: 100%; }
+
+/* ---------- list: two-ended rows ---------- */
+.list-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 18px; align-items: start; }
+.list { grid-column: 1 / 7; min-width: 0; }
+.list-shot { grid-column: 7 / 13; position: sticky; top: 24px; min-width: 0; }
+.list h2 { font-size: var(--s-head); font-weight: 500; margin-bottom: 32px; }
+.group { margin-bottom: 40px; }
+.group > p { color: var(--muted); font-size: var(--s-body); margin-bottom: 6px; }
+.row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; min-height: 36px; padding-block: 6px; }
+.row .l { display: flex; gap: 8px; align-items: baseline; font-size: var(--s-body); min-width: 0; }
+.row .dot { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); transform: translateY(1px); }
+.group.added .dot { background: var(--field-1); border: 2px solid var(--accent); box-sizing: border-box; }
+.group.verified .dot { background: var(--ink); }
+.row .v { flex: none; font-size: var(--s-small); color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+
+
+/* ---------- footer: name first ---------- */
+footer { background: var(--band); color: var(--band-ink); overflow: hidden; }
+.foot-name { padding-top: 56px; transform-origin: 50% 100%; }
+.foot-invite { margin-top: 24px; font-size: var(--s-lead); max-width: 34ch; }
+.foot-row { margin-top: 72px; }
+.places { grid-column: 1 / 7; display: grid; gap: 6px; align-content: start; }
+.places a { font-size: var(--s-head); color: var(--band-accent); text-decoration: none; line-height: 1.2; }
+.places a:hover { text-decoration: underline; color: var(--band-ink); }
+.refs { grid-column: 7 / 13; columns: 2; column-gap: 36px; font-size: var(--s-body); }
+.refs li { break-inside: avoid; margin-bottom: 12px; }
+.refs ol { padding-left: 1.2em; }
+.refs a { color: var(--band-ink); }
+.refs a:hover { color: var(--band-accent); }
+.foot-legal { margin-top: 96px; padding-bottom: 28px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: var(--s-small); }
+.foot-legal p { max-width: 110ch; }
+.foot-legal a { color: var(--band-ink); }
+
+/* ---------- motion: entrances (content is visible at rest; only elements entering later travel) ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.js .in { animation: rise 0.7s var(--ease) both; animation-delay: var(--d, 0ms); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .in { animation: none; }
+  .name-fit, .foot-name, .drift img { transform: none !important; }
+}
+
+/* ---------- narrow screens ---------- */
+@media (max-width: 1000px) {
+  .intro-head { grid-column: 1 / -1; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .intro-note { grid-column: 1 / -1; margin-top: 24px; }
+  .intro-said { grid-column: 1 / -1; }
+  .intro-photo { grid-column: 1 / -1; }
+  .ex > p, .ex > .call, .resp { grid-column: 1 / -1; grid-row: auto; }
+  .stats-head, .figures { grid-column: 1 / -1; }
+  .figures { margin-top: 40px; }
+  .resp-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dial-left, .dial-chart { grid-column: 1 / -1; }
+  .dial-chart { margin-top: 48px; }
+  .places, .refs { grid-column: 1 / -1; }
+  .refs { margin-top: 40px; }
+  .list, .list-shot { grid-column: 1 / -1; }
+  .list-shot { position: static; margin-top: 40px; }
+}
+@media (max-width: 640px) {
+  :root { --gutter-l: max(16px, env(safe-area-inset-left, 0px)); --gutter-r: max(16px, env(safe-area-inset-right, 0px)); }
+  .hero { grid-template-rows: auto auto auto 1fr; min-height: auto; padding-block: 16px 0; }
+  .hero-top { order: 2; flex-direction: column; gap: 0; }
+  .hero-top .corner-links { display: none; }
+  .hero-name { order: 1; margin-top: 10svh; }
+  .button { display: block; text-align: center; }
+  .hero-bottom { order: 3; }
+  .hero-photo { display: block; order: 4; }
+  .hero-photo img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; row-gap: 32px; margin-top: 64px; }
+  .band { grid-template-columns: 1fr; }
+  .band img { height: auto; aspect-ratio: 4 / 3; }
+  .proof-head span { padding-left: 0; }
+  table.ledger thead { display: none; }
+  table.ledger, .ledger tbody, .ledger tr, .ledger td { display: block; width: auto !important; }
+  .ledger td { padding: 2px 14px; text-align: left !important; }
+  .ledger tr { padding-block: 12px; }
+  .ledger tbody tr:nth-child(even) { background: var(--surface); }
+  .ledger tbody tr:nth-child(even) td { background: transparent; }
+  .ledger td.year { font-size: var(--s-lead); padding-top: 6px; }
+  .examples button { background: var(--bg); padding: 10px 14px; min-height: 44px; text-decoration: none; }
+  .fig { grid-template-columns: 52fr auto 48fr; }
+  .fig p { grid-column: 1 / -1; padding-left: 0; margin-top: 4px; font-size: var(--s-small); }
+  .stats-shot { grid-template-columns: 1fr; }
+  .refs { columns: 1; }
+  .row { min-height: 44px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="hero" id="top">
+    <div class="hero-top">
+      <div>
+        <p class="hero-lede">Can optical atomic clocks find buried mass? <strong>A gravimeter on the same stations is 690 to 13 000 times more sensitive.</strong></p>
+        <a class="button" href="#dial">Type a clock precision</a>
+      </div>
+      <nav class="corner-links" aria-label="Sections">
+        <a href="#found">Findings</a>
+        <a href="#checked">Published results</a>
+        <a href="#refs">References</a>
+      </nav>
+    </div>
+    <h1 class="hero-name">
+      <span class="name-fit" data-fit>Clock vs gravimeter</span>
+    </h1>
+    <div class="hero-bottom">
+      <span>Atomic Gravity Simulator · final-year project · October 2026</span>
+      <span class="corner-links"><a href="#changed">What changed</a></span>
+    </div>
+    <figure class="hero-photo">
+      <img src="{{IMG:clock}}" width="1200" height="900" alt="NIST optical atomic clock: two copper magnetic coils with violet laser beams crossing between them.">
+    </figure>
+  </header>
+</div>
+
+<main>
+  <section class="section wrap" id="found" aria-labelledby="found-h">
+    <div class="grid">
+      <h2 class="intro-head" id="found-h">What the study found</h2>
+      <p class="intro-note">Clocks do see buried mass. A field gravimeter on the same stations sees it far more strongly, in every scenario the simulator ships with.</p>
+      <div class="facts">
+        <div class="fact"><b class="num">690–13 000×</b><span>Gravimeter SNR over clock SNR, five scenarios</span></div>
+        <div class="fact"><b class="num">10⁻²¹</b><span>Clock precision per station before a joint survey helps</span></div>
+        <div class="fact"><b class="num">9 / 9</b><span>Published values the engine reproduces</span></div>
+        <div class="fact"><b class="num">324</b><span>Automated tests, all passing</span></div>
+      </div>
+      <p class="intro-said">Bondarescu and colleagues proposed in 2012 that clocks and gravimeters together would pin down depth. Nobody had tested it. This project does, and with any clock that exists or is planned, adding the clock leaves the depth error unchanged.</p>
+      <figure class="intro-photo">
+        <img src="{{IMG:clock}}" width="1200" height="900" loading="lazy" alt="NIST optical atomic clock: two copper magnetic coils with violet laser beams crossing between them.">
+        <figcaption>An optical atomic clock at NIST. Clocks like this measure gravity through the redshift, Δf/f₀ = ΔΦ/c².</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section wrap" id="how" aria-labelledby="how-h">
+    <div class="how">
+      <div class="how-col">
+        <h2 id="how-h">How a survey runs</h2>
+        <div class="ex">
+          <p>First, describe the campaign.</p>
+          <pre class="call"><code>"bodies": [{ "geometry": "sphere", "mass_kg": 5e12,
+             "depth_m": 1500, "density_contrast_kg_m3": 1500 }],
+"sensor": { "clock_species": "sr", "performance_class": "projected",
+            "systematic_uncertainty": 1e-19 },
+"survey": { "width_m": 8000, "spacing_m": 250, "pattern": "serpentine" }</code></pre>
+          <div class="resp">
+            <div class="resp-panel" data-ui>
+              <div><b class="num">1 089</b>stations on a 33 × 33 grid</div>
+              <div><b class="num">21.5 days</b>of fieldwork, travel included</div>
+              <div><b class="num">−2.47 × 10⁻¹⁸</b>peak clock signal</div>
+              <div><b class="num">14.8 mGal</b>peak gravity anomaly</div>
+            </div>
+          </div>
+        </div>
+        <div class="ex">
+          <p>Then ask what it could detect.</p>
+          <pre class="call"><code>POST /api/experiments/detectability</code></pre>
+          <div class="resp">
+            <img src="{{IMG:detect}}" width="860" height="590" loading="lazy" alt="Detectability heatmap from the simulator: expected significance over buried mass and depth, with the 3σ threshold line and the configured body marked.">
+          </div>
+        </div>
+        <div class="ex final">
+          <p>Finally, run it and invert the measurements.</p>
+          <pre class="call"><code>POST /api/experiments/{id}/simulations   { "playback": "instant" }</code></pre>
+          <div class="resp">
+            <img src="{{IMG:recon}}" width="740" height="430" loading="lazy" alt="Simulator 3D reconstruction: the estimated source with its 95 % region inside the true buried sphere, under the survey plane and reference clock.">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="band">
+      <figure class="tall drift">
+        <img src="{{IMG:skytree}}" width="800" height="1200" loading="lazy" alt="Tokyo Skytree seen from below against a clear blue sky.">
+        <figcaption>Tokyo Skytree. Two clocks 452.6 m apart here measured the redshift in 2018.</figcaption>
+      </figure>
+      <figure class="wide drift">
+        <img src="{{IMG:tunnel}}" width="1200" height="900" loading="lazy" alt="Stone portal of the Fréjus rail tunnel at Bardonecchia, with tracks running into the mountain.">
+        <figcaption>The Fréjus tunnel at Bardonecchia. A transportable clock in the Modane laboratory under this massif was compared with Torino.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section class="section wrap" id="checked" aria-labelledby="checked-h">
+    <h2 class="proof-head" id="checked-h">Checked against<span>published work</span></h2>
+    <div class="table-wrap">
+      <table class="ledger">
+        <caption class="sr">Published studies, what the engine recomputed, and the result</caption>
+        <thead><tr><th scope="col">Year</th><th scope="col">Study and check</th><th scope="col">Published in</th><th scope="col" style="text-align:right">Result</th></tr></thead>
+        <tbody>
+          <tr><td class="year">2026</td><td class="study">This project<small>First quantitative test of joint clock and gravimeter surveys</small></td><td class="where">RESEARCH.md</td><td class="result">New result</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2025</td><td class="study">Shinkai, Takamoto, Katori<small>Skytree numbers used for the benchmark</small></td><td class="where"><a href="https://arxiv.org/abs/2502.06104">arXiv:2502.06104</a></td><td class="result">Source of values</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2024</td><td class="study">Yuan et al.<small>Compact Ca⁺ clocks, chronometric levelling at 10 cm</small></td><td class="where"><a href="https://doi.org/10.1103/PhysRevApplied.21.044052">Phys. Rev. Applied 21</a></td><td class="result">Field clock class</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2020</td><td class="study">Takamoto et al., Tokyo Skytree<small>Redshift for Δh = 452.596 m: engine 4.93370 × 10⁻¹⁴, geodesy 4.93371(14) × 10⁻¹⁴</small></td><td class="where"><a href="https://doi.org/10.1038/s41566-020-0619-8">Nature Photonics 14</a></td><td class="result agree">Agrees, z = −0.07</td></tr>
+          <tr><td class="year"></td><td class="study">Same, against the clocks<small>Clocks measured 4.93378(45) × 10⁻¹⁴</small></td><td class="where"><a href="https://www.riken.jp/en/news_pubs/research_news/pr/2020/20200407_2">RIKEN release</a></td><td class="result agree">Agrees, z = −0.18</td></tr>
+          <tr><td class="year"></td><td class="study">Schröder et al.<small>Simulated European clock network for hydrology</small></td><td class="where"><a href="https://arxiv.org/abs/2012.02618">arXiv:2012.02618</a></td><td class="result">Different scale</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2018</td><td class="study">Grotti et al., Modane to Torino<small>Engine converts the 47.92(83) Hz shift to 10 033.9 ± 173.8 m²/s²; paper 10 034(174)</small></td><td class="where"><a href="https://doi.org/10.1038/s41567-017-0042-3">Nature Physics 14</a></td><td class="result agree">Agrees</td></tr>
+          <tr><td class="year"></td><td class="study">Same, against geodesy<small>Geodetic value 10 032.1(16) m²/s²</small></td><td class="where"><a href="https://arxiv.org/abs/1705.04089">arXiv:1705.04089</a></td><td class="result agree">Agrees, z = 0.01</td></tr>
+          <tr><td class="year"></td><td class="study">Mehlstäubler et al.<small>Review of clocks for geodesy; basis for the clock classes</small></td><td class="where"><a href="https://doi.org/10.1088/1361-6633/aab409">Rep. Prog. Phys. 81</a></td><td class="result">Clock classes</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2017</td><td class="study">Lion et al.<small>A few clock points improve a regional geoid model</small></td><td class="where"><a href="https://doi.org/10.1007/s00190-016-0986-6">J. Geodesy</a></td><td class="result">Different target</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2015</td><td class="study">Bondarescu et al.<small>Clocks as monitors of volcanic uplift</small></td><td class="where"><a href="https://doi.org/10.1093/gji/ggv246">Geophys. J. Int. 202</a></td><td class="result">Different signal</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2012</td><td class="study">Bondarescu et al., buried sphere<small>Peak potential 0.2519 m²/s² (paper about 0.25); peak gravity 12.60 mGal (paper 12.6)</small></td><td class="where"><a href="https://doi.org/10.1111/j.1365-246X.2012.05636.x">Geophys. J. Int. 191</a></td><td class="result agree">Agrees</td></tr>
+          <tr><td class="year"></td><td class="study">Same paper, detection limit<small>Smallest sphere at 45 km: 3.92 km (paper 4 km); 1 cm of height: 1.091 × 10⁻¹⁸ (paper 1.1)</small></td><td class="where"><a href="https://arxiv.org/abs/1209.2889">arXiv:1209.2889</a></td><td class="result agree">Agrees</td></tr>
+          <tr><td class="year"></td><td class="study">Same paper, joint survey proposal<small>Proposed, never tested; tested by this project</small></td><td class="where">Section 5.2 of RESEARCH.md</td><td class="result">Tested here</td></tr>
+          <tr class="gap"><td colspan="4"></td></tr>
+          <tr><td class="year">2000</td><td class="study">Nagy, Papp, Benedek<small>Closed-form prism potential and gravity used by the engine</small></td><td class="where"><a href="https://doi.org/10.1007/s001900000116">J. Geodesy 74</a></td><td class="result">Used in engine</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="dial wrap section" id="dial" aria-labelledby="dial-h">
+    <div class="dial-grid">
+    <div class="dial-left">
+    <h2 id="dial-h">How good must the clock be?</h2>
+    <div class="dial-line" data-ui>
+      <label class="sr" for="clockInput">Clock uncertainty per station, as a fractional frequency</label>
+      <input id="clockInput" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="8e-19" aria-describedby="clockHelp">
+    </div>
+    <p class="dial-read" id="clockRead" aria-live="polite">Read as <strong>8.0 × 10⁻¹⁹</strong> per station.</p>
+    <p class="sr" id="clockHelp">Type a number such as 8e-19 or 5 × 10^-19.</p>
+    <div class="answer-wrap" data-ui>
+      <table class="answer" id="answer">
+        <caption class="sr">Each built-in scenario with the clock precision you typed</caption>
+        <thead><tr><th scope="col">Scenario</th><th scope="col">Clock SNR</th><th scope="col">Gravimeter SNR</th><th scope="col">Gravimeter ahead by</th><th scope="col">Joint depth error</th></tr></thead>
+        <tbody id="answerBody">{{ROWS}}</tbody>
+      </table>
+    </div>
+    <div class="examples">
+      <button type="button" data-v="1.2e-17">1.2e-17, today's field clocks</button>
+      <button type="button" data-v="8e-19">8e-19, best laboratory clock</button>
+      <button type="button" data-v="1e-21">1e-21, about 1000 times better</button>
+      <button type="button" data-v="1e-22">1e-22</button>
+    </div>
+    </div>
+    <figure class="dial-chart" data-ui>
+      <svg id="dialChart" viewBox="0 0 560 400" role="img" aria-labelledby="dialChartTitle"><title id="dialChartTitle">How far the gravimeter is ahead of the clock, for each scenario, as clock precision improves</title></svg>
+      <ul class="legend" id="dialLegend"></ul>
+    </figure>
+    </div>
+    <p class="dial-note">Engine output for each scenario with a field relative gravimeter at 5 µGal per station. Clock SNR scales as one over the precision; the joint depth error is the Cramér–Rao bound of the joint survey divided by the gravimeter's, read from the engine's sweep from 10⁻²³ to 10⁻¹⁵.</p>
+  </section>
+
+  <section class="section wrap" id="why" aria-labelledby="why-h">
+    <div class="grid">
+      <h2 class="stats-head" id="why-h"><span>Why the gravimeter</span>wins every time</h2>
+      <div class="figures">
+        <div class="fig"><span class="whole">5</span><span class="dec">.0</span><p>µGal per station, the reading error of a field relative gravimeter.</p></div>
+        <div class="fig"><span class="whole">3</span><span class="dec">.1</span><p>µGal more from a 1 cm station-height error, at 3.086 µGal per cm.</p></div>
+        <div class="fig"><span class="whole">1</span><span class="dec">.2</span><p>× 10⁻¹⁷ per station for today's field clock. The same 1 cm costs it only 1.1 × 10⁻¹⁸.</p></div>
+        <div class="fig"><span class="whole">0</span><span class="dec">.96</span><p>Largest mass–depth correlation. Combining the instruments leaves it in place.</p></div>
+        <div class="fig"><span class="whole">69</span><span class="dec"></span><p>Times ahead the gravimeter still is with a pessimistic 50 µGal error.</p></div>
+      </div>
+      <div class="stats-shot">
+        <figure>
+          <img src="{{IMG:instruments}}" width="860" height="1000" loading="lazy" alt="The simulator's Clock, gravimeter or both section: a verdict, a table of SNR and uncertainties for clock, gravimeter and joint surveys, and a chart of depth uncertainty against clock accuracy.">
+          <figcaption>The new section on the Experiment page. Potential falls off as 1/r and gravity as z/r³, so the gravimeter sees a sharp peak over the body.</figcaption>
+        </figure>
+        <figure>
+          <img src="{{IMG:tubes}}" width="900" height="945" loading="lazy" alt="Illustration of a strontium lattice clock: atoms packed in pancake-shaped layers inside crossing red laser beams.">
+          <figcaption>Atoms held in an optical lattice, as in the strontium clocks this simulator models.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="changed" aria-labelledby="changed-h">
+    <div class="list-grid">
+    <div class="list">
+      <h2 id="changed-h">What changed in the project</h2>
+      <div class="group fixed">
+        <p>Fixed</p>
+        <div class="row"><span class="l"><span class="dot"></span>Two frontend tests written before sign-in</span><span class="v">Passing</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Browser tests could not sign in</span><span class="v">Passing</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Account button pushed off screen on phones</span><span class="v">Fixed</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Section menu overflowing at 768 px</span><span class="v">Fixed</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>README describing an older version</span><span class="v">Rewritten</span></div>
+      </div>
+      <div class="group added">
+        <p>Added</p>
+        <div class="row"><span class="l"><span class="dot"></span>Clock, gravimeter and joint comparison</span><span class="v">instruments.py</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Published benchmarks, 9 checks</span><span class="v">benchmarks.py</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Section on the Experiment page</span><span class="v">InstrumentComparison.tsx</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Validation page with DOIs</span><span class="v">Validation.tsx</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Research write-up with 11 references</span><span class="v">RESEARCH.md</span></div>
+      </div>
+      <div class="group verified">
+        <p>Verified</p>
+        <div class="row"><span class="l"><span class="dot"></span>Engine tests</span><span class="v">144 of 144</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Frontend unit tests</span><span class="v">155 of 155</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Browser tests, six widths, two themes</span><span class="v">25 of 25</span></div>
+        <div class="row"><span class="l"><span class="dot"></span>Typecheck and lint</span><span class="v">0 errors</span></div>
+      </div>
+    </div>
+      <figure class="list-shot">
+        <img src="{{IMG:map}}" width="1240" height="700" loading="lazy" alt="Simulator gravity anomaly map: concentric rings of anomaly over the survey grid with the true and estimated source positions.">
+        <figcaption>Gravity anomaly map from a completed simulation.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer id="refs">
+  <div class="wrap">
+    <div class="foot-name" id="footName" aria-hidden="true">
+      <span class="name-fit" data-fit>Clock vs gravimeter</span>
+    </div>
+    <p class="foot-invite">Read the full write-up in RESEARCH.md, or open any source below.</p>
+    <div class="grid foot-row">
+      <div class="places">
+        <a href="https://doi.org/10.1111/j.1365-246X.2012.05636.x">Bondarescu 2012</a>
+        <a href="https://doi.org/10.1038/s41567-017-0042-3">Grotti 2018</a>
+        <a href="https://doi.org/10.1038/s41566-020-0619-8">Takamoto 2020</a>
+      </div>
+      <div class="refs">
+        <h2 class="sr">References</h2>
+        <ol>
+          <li><a href="https://doi.org/10.1111/j.1365-246X.2012.05636.x">Bondarescu et al. 2012, Geophysical applicability of atomic clocks, Geophys. J. Int. 191, 78–82</a></li>
+          <li><a href="https://doi.org/10.1093/gji/ggv246">Bondarescu et al. 2015, Clocks to monitor vertical surface motion, Geophys. J. Int. 202</a></li>
+          <li><a href="https://doi.org/10.1007/s00190-016-0986-6">Lion et al. 2017, High-resolution geopotential from clock comparisons, J. Geodesy</a></li>
+          <li><a href="https://doi.org/10.1088/1361-6633/aab409">Mehlstäubler et al. 2018, Atomic clocks for geodesy, Rep. Prog. Phys. 81</a></li>
+          <li><a href="https://arxiv.org/abs/1804.09506">Delva, Denker, Lion, Chronometric geodesy: methods and applications</a></li>
+          <li><a href="https://doi.org/10.1038/s41567-017-0042-3">Grotti et al. 2018, Geodesy and metrology with a transportable optical clock, Nature Physics 14</a></li>
+          <li><a href="https://doi.org/10.1038/s41566-020-0619-8">Takamoto et al. 2020, Test of general relativity by transportable lattice clocks, Nature Photonics 14</a></li>
+          <li><a href="https://arxiv.org/abs/2502.06104">Shinkai, Takamoto, Katori 2025, Transportable lattice clocks and general relativity</a></li>
+          <li><a href="https://doi.org/10.1103/PhysRevApplied.21.044052">Yuan et al. 2024, Chronometric leveling beyond laser coherence, Phys. Rev. Applied 21</a></li>
+          <li><a href="https://arxiv.org/abs/2012.02618">Schröder et al., Clock networks for validating satellite gravity missions</a></li>
+          <li><a href="https://doi.org/10.1007/s001900000116">Nagy, Papp, Benedek 2000, The gravitational potential of the prism, J. Geodesy 74</a></li>
+        </ol>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:Optical_atomic_clock_(5881387757).jpg">“Optical atomic clock”</a> and <a href="https://commons.wikimedia.org/wiki/File:Atomic_Clock;_Optical_Tubes_(5940426959).jpg">“Atomic Clock; Optical Tubes”</a> by NIST, public domain; <a href="https://commons.wikimedia.org/wiki/File:20181123_Tokyo_Skytree-2.jpg">“20181123 Tokyo Skytree-2”</a> by Balon Greyjoy, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>; <a href="https://commons.wikimedia.org/wiki/File:Bardonecchia_(TO)_-_portale_sud_del_traforo_ferroviario_del_Frejus.jpg">“Bardonecchia, portale sud del traforo del Frejus”</a> by K.Weise, public domain; all via Wikimedia Commons. Interface pictures are screenshots of the simulator from its browser test run.</p>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var DATA = {{DATA}};
+  var SHORT = {
+    'regional-field': 'Regional, field clocks',
+    'ore-field': 'Ore, field clocks',
+    'ore-laboratory': 'Ore, laboratory clocks',
+    'ore-projected': 'Ore, projected clocks',
+    'aquifer-projected': 'Aquifer, projected clocks'
+  };
+  var SUP = { '⁻': '-', '⁺': '+', '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9' };
+  var TOSUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+
+  function parse(text) {
+    var s = String(text).trim().toLowerCase().replace(/[⁻⁺⁰¹²³⁴⁵⁶⁷⁸⁹]/g, function (c) { return SUP[c]; })
+      .replace(/−/g, '-').replace(/[×*·]/g, 'x').replace(/\s+/g, '');
+    var m = /^(\d*\.?\d+)?(?:e|x10\^?|x10)([-+]?\d+)$/.exec(s) || /^()10\^?([-+]?\d+)$/.exec(s);
+    var v = m ? (m[1] ? parseFloat(m[1]) : 1) * Math.pow(10, parseInt(m[2], 10)) : (/^\d*\.?\d+$/.test(s) ? parseFloat(s) : NaN);
+    return isFinite(v) && v > 0 ? v : NaN;
+  }
+  function sci(v, digits) {
+    var e = Math.floor(Math.log10(v));
+    var m = v / Math.pow(10, e);
+    if (m >= 9.95) { m = 1; e += 1; }
+    return m.toFixed(digits) + ' × 10' + String(e).split('').map(function (c) { return TOSUP[c] || c; }).join('');
+  }
+  function group(n) {
+    var r = n >= 100 ? Math.round(n) : n >= 10 ? Math.round(n * 10) / 10 : Math.round(n * 100) / 100;
+    var parts = String(r).split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return parts.join('.');
+  }
+  function gainAt(row, sigma) {
+    var xs = row.sweep_sigma, ys = row.gain;
+    if (sigma <= xs[0]) return ys[0];
+    if (sigma >= xs[xs.length - 1]) return ys[ys.length - 1];
+    for (var i = 0; i < xs.length - 1; i++) {
+      if (sigma >= xs[i] && sigma <= xs[i + 1] && ys[i] != null && ys[i + 1] != null) {
+        var f = (Math.log(sigma) - Math.log(xs[i])) / (Math.log(xs[i + 1]) - Math.log(xs[i]));
+        return Math.exp(Math.log(ys[i]) + f * (Math.log(ys[i + 1]) - Math.log(ys[i])));
+      }
+    }
+    return null;
+  }
+  var input = document.getElementById('clockInput');
+  var read = document.getElementById('clockRead');
+  var body = document.getElementById('answerBody');
+  function render() {
+    var sigma = parse(input.value);
+    if (!(sigma >= 1e-25 && sigma <= 1e-12)) {
+      read.innerHTML = '<span class="dial-error">Type a precision between 1e-25 and 1e-12, such as 8e-19.</span>';
+      return;
+    }
+    read.innerHTML = 'Read as <strong>' + sci(sigma, 1) + '</strong> per station.' +
+      (sigma < 1e-21 ? ' No clock is planned anywhere near this.' : sigma < 8e-19 ? ' Better than any clock built so far.' : '');
+    body.innerHTML = DATA.map(function (row) {
+      var clock = row.clock_snr * row.sigma / sigma;
+      var ratio = row.grav_snr / clock;
+      var ahead = ratio >= 1 ? '×' + group(ratio) : 'Clock ahead ×' + group(1 / ratio);
+      var g = gainAt(row, sigma);
+      var joint = g == null ? 'Unavailable' : g > 0.999 ? 'Unchanged' : '−' + Math.round((1 - g) * 100) + ' %';
+      return '<tr><td>' + SHORT[row.id] + '</td><td class="n">' + group(clock) + '</td><td class="n">' + group(row.grav_snr) +
+        '</td><td class="n' + (ratio < 1 ? ' win' : '') + '">' + ahead + '</td><td class="n' + (g != null && g <= 0.9 ? ' win' : '') + '">' + joint + '</td></tr>';
+    }).join('');
+  }
+  /* Live chart: gravimeter SNR over clock SNR against clock precision; one line per distinct survey. */
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var chart = document.getElementById('dialChart');
+  var W = 560, H = 400, L = 64, R = 16, T = 16, B = 56;
+  var XMIN = -15, XMAX = -23, YMIN = -3, YMAX = 5;
+  function X(lg) { return L + (XMIN - lg) / (XMIN - XMAX) * (W - L - R); }
+  function Y(lg) { return T + (YMAX - lg) / (YMAX - YMIN) * (H - T - B); }
+  function el(name, attrs, text) {
+    var e = document.createElementNS(svgNS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function pow10(n) { return '10' + String(n).split('').map(function (c) { return TOSUP[c] || c; }).join(''); }
+  var LINES = [], seen = {};
+  var DASH = ['', '8 5', '2 5', '12 4 2 4'];
+  DATA.forEach(function (row) {
+    var key = (row.grav_snr / (row.clock_snr * row.sigma)).toPrecision(4);
+    if (seen[key]) { seen[key].names.push(SHORT[row.id]); return; }
+    seen[key] = { per: row.grav_snr / (row.clock_snr * row.sigma), names: [SHORT[row.id]] };
+    LINES.push(seen[key]);
+  });
+  var marker, dots = [];
+  (function draw() {
+    for (var g = YMIN; g <= YMAX; g += 2) {
+      chart.appendChild(el('text', { x: L - 10, y: Y(g) + 4, 'text-anchor': 'end', class: 'tick' }, pow10(g)));
+    }
+    for (var x = -15; x >= -23; x -= 2) {
+      chart.appendChild(el('text', { x: X(x), y: H - B + 22, 'text-anchor': 'middle', class: 'tick' }, pow10(x)));
+    }
+    chart.appendChild(el('path', { d: 'M' + L + ' ' + T + 'V' + (H - B) + 'H' + (W - R), class: 'axis' }));
+    chart.appendChild(el('text', { x: L + (W - L - R) / 2, y: H - 8, 'text-anchor': 'middle', class: 'label' }, 'Clock precision per station (better to the right)'));
+    chart.appendChild(el('text', { transform: 'translate(16 ' + (T + (H - T - B) / 2) + ') rotate(-90)', 'text-anchor': 'middle', class: 'label' }, 'Gravimeter ahead by (×)'));
+    chart.appendChild(el('path', { d: 'M' + L + ' ' + Y(0) + 'H' + (W - R), class: 'parity' }));
+    chart.appendChild(el('text', { x: W - R, y: Y(1.3), 'text-anchor': 'end', class: 'label' }, 'Dashed line: both equal'));
+    marker = el('path', { class: 'marker' });
+    chart.appendChild(marker);
+    LINES.forEach(function (line, i) {
+      var pts = [];
+      for (var lg = XMIN; lg >= XMAX - 1e-9; lg -= 0.25) {
+        var y = Math.log10(line.per * Math.pow(10, lg));
+        if (y >= YMIN && y <= YMAX) pts.push(X(lg).toFixed(1) + ',' + Y(y).toFixed(1));
+      }
+      chart.appendChild(el('polyline', { points: pts.join(' '), class: 'line', 'stroke-dasharray': DASH[i] || '' }));
+      var d = el('circle', { r: 5.5, class: 'dot' });
+      chart.appendChild(d);
+      dots.push(d);
+      var li = document.createElement('li');
+      li.innerHTML = '<svg viewBox="0 0 34 8" aria-hidden="true"><path d="M0 4H34" stroke="currentColor" stroke-width="2.25" stroke-dasharray="' + (DASH[i] || '') + '"/></svg>' + line.names.join(' and ');
+      document.getElementById('dialLegend').appendChild(li);
+    });
+  })();
+  function moveMarker(sigma) {
+    var lg = Math.max(XMAX, Math.min(XMIN, Math.log10(sigma)));
+    marker.setAttribute('d', 'M' + X(lg).toFixed(1) + ' ' + T + 'V' + (H - B));
+    LINES.forEach(function (line, i) {
+      var y = Math.max(YMIN, Math.min(YMAX, Math.log10(line.per * Math.pow(10, lg))));
+      dots[i].setAttribute('cx', X(lg).toFixed(1));
+      dots[i].setAttribute('cy', Y(y).toFixed(1));
+    });
+  }
+  var baseRender = render;
+  render = function () { baseRender(); var v = parse(input.value); if (v >= 1e-25 && v <= 1e-12) moveMarker(v); };
+  input.addEventListener('input', function () { render(); });
+  Array.prototype.forEach.call(document.querySelectorAll('.examples button'), function (b) {
+    b.addEventListener('click', function () { input.value = b.getAttribute('data-v'); render(); input.focus(); });
+  });
+  render();
+
+  /* Fit each name to the full width of its container once the display face has loaded. */
+  function fit() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-fit]'), function (name) {
+      var width = name.parentElement.clientWidth;
+      name.style.fontSize = '100px';
+      var natural = name.scrollWidth;
+      if (natural > 0) name.style.fontSize = (100 * width / natural).toFixed(2) + 'px';
+    });
+  }
+  fit();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  document.documentElement.classList.add('js');
+
+  /* Entrances: parts of each section rise in turn as the section arrives. Anything already on screen stays put. */
+  var parts = document.querySelectorAll('main h2, .intro-note, .fact, .intro-said, figure, .ex, .ledger tbody tr, .fig, .row, .dial-read, .answer-wrap, .examples, .foot-invite, .places a, .refs li');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      });
+    }, { rootMargin: '0px 0px 15% 0px' });
+    var lastParent = null, order = 0;
+    Array.prototype.forEach.call(parts, function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight) return;
+      var p = el.parentElement;
+      order = p === lastParent ? order + 1 : 0;
+      lastParent = p;
+      el.style.setProperty('--d', Math.min(order, 6) * 75 + 'ms');
+      io.observe(el);
+    });
+  }
+
+  /* Signature move: the wordmark settles from 1 to 0.94 as the first screen leaves; the footer name grows from 0.94 to 1 as it arrives. Pictures drift slowly. */
+  var hero = document.querySelector('.hero-name .name-fit');
+  var foot = document.getElementById('footName');
+  var drifts = document.querySelectorAll('.drift img');
+  var ticking = false;
+  function frame() {
+    ticking = false;
+    var vh = window.innerHeight;
+    var p = Math.min(1, Math.max(0, window.scrollY / vh));
+    hero.style.transform = 'scale(' + (1 - 0.06 * p) + ')';
+    var fr = foot.getBoundingClientRect();
+    var q = Math.min(1, Math.max(0, (vh - fr.top) / (vh * 0.8)));
+    foot.style.transform = 'scale(' + (0.94 + 0.06 * q) + ')';
+    Array.prototype.forEach.call(drifts, function (img) {
+      var r = img.getBoundingClientRect();
+      var k = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+      img.style.transform = 'scale(' + (1.1 - 0.08 * k) + ') translateY(' + ((0.5 - k) * 3) + '%)';
+    });
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  window.addEventListener('resize', function () { fit(); frame(); });
+  frame();
+})();
+</script>

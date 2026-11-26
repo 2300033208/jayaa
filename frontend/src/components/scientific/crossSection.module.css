@@ -1,0 +1,88 @@
+.figure {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+
+.ground {
+  fill: var(--surface-sunken);
+}
+
+.surface {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1.5;
+}
+
+.tick {
+  stroke: var(--line-strong);
+}
+
+.tickLabel,
+.axisLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--ink-3);
+}
+
+.axisLabel {
+  font-family: var(--font-sans);
+}
+
+.dense {
+  fill: var(--scene-dense);
+  fill-opacity: 0.45;
+  stroke: var(--scene-dense);
+  stroke-width: 1.5;
+}
+
+.cavity {
+  fill: var(--surface);
+  fill-opacity: 0.6;
+  stroke: var(--scene-cavity);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+}
+
+.offPlane {
+  opacity: 0.35;
+}
+
+.bodyLabel {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3px;
+}
+
+.sounding {
+  stroke: var(--ink-3);
+  stroke-width: 1;
+}
+
+.sensor {
+  fill: var(--scene-sensor);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.sensorLabel {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.caption {
+  font-size: 12px;
+  color: var(--ink-3);
+}

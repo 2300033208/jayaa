@@ -1,0 +1,132 @@
+.section {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: calc(var(--topbar-height) + 56px);
+}
+
+.section:first-of-type {
+  border-top: 0;
+  padding-top: var(--space-2);
+}
+
+.sectionHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.step {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  padding-top: 2px;
+}
+
+.sectionTitle {
+  font-size: 15px;
+}
+
+.sectionDescription {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  max-width: 64ch;
+}
+
+.sectionActions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+  padding-left: calc(var(--space-3) + 18px);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.bodyCard {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+}
+
+.bodyHeader {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.bodyTitle {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.derived {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.derived strong {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.inline {
+  display: flex;
+  align-items: end;
+  gap: var(--space-2);
+}
+
+.inline > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 1280px) {
+  .fields,
+  .bodyCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .fields {
+    padding-left: 0;
+  }
+  .sectionHeader {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .sectionActions {
+    grid-column: 1 / -1;
+  }
+}
+
+.groupError,
+.groupWarning {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  color: var(--critical-ink);
+}
+
+.groupWarning {
+  color: var(--warning-ink);
+}

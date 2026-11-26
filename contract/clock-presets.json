@@ -1,0 +1,128 @@
+{
+  "schema_version": 2,
+  "note": "Blackbody-radiation (BBR) sensitivities are approximate: dν/ν per kelvin at 300 K, obtained from the room-temperature BBR shift with T⁴ scaling.",
+  "performance_note": "Representative values per performance class. σᵧ(1 s) is the instability of one clock; comparing it with an identical reference clock is √2 noisier. The systematic uncertainty is incurred again at every station set-up and does not average down. Uptime is the fraction of time the clock produces valid data.",
+  "performance_classes": [
+    {
+      "id": "field",
+      "label": "Field-demonstrated",
+      "description": "Transportable clocks as operated outside the laboratory today."
+    },
+    {
+      "id": "laboratory",
+      "label": "Laboratory state of the art",
+      "description": "Best stationary laboratory performance. Not yet demonstrated with a transportable clock."
+    },
+    {
+      "id": "projected",
+      "label": "Projected",
+      "description": "An assumption about future field clocks. Not demonstrated anywhere."
+    }
+  ],
+  "presets": [
+    {
+      "id": "sr",
+      "label": "⁸⁷Sr optical lattice clock",
+      "reference_frequency_hz": 429228004229873.0,
+      "bbr_sensitivity_per_k": 7.3e-17,
+      "performance": {
+        "field": {
+          "stability_1s": 5e-16,
+          "systematic_uncertainty": 1e-17,
+          "uptime_percent": 50,
+          "basis": "Transportable ⁸⁷Sr lattice clocks operated outside the laboratory: systematic uncertainty from 7 × 10⁻¹⁷ (PTB, 2017) to the 10⁻¹⁸ level (RIKEN, 2020–2021), instability of order 10⁻¹⁶–10⁻¹⁵ /√τ. Uptime is an assumption."
+        },
+        "laboratory": {
+          "stability_1s": 5e-17,
+          "systematic_uncertainty": 1e-18,
+          "uptime_percent": 90,
+          "basis": "Stationary ⁸⁷Sr lattice clocks: 4.8 × 10⁻¹⁷ /√τ (JILA, 2019); systematic uncertainty 2.0 × 10⁻¹⁸ (JILA, 2019) and 8 × 10⁻¹⁹ (JILA, 2024)."
+        },
+        "projected": {
+          "stability_1s": 1e-17,
+          "systematic_uncertainty": 1e-19,
+          "uptime_percent": 95,
+          "basis": "Assumption: a field clock about one order of magnitude better than today's best laboratory clocks. Not demonstrated."
+        }
+      }
+    },
+    {
+      "id": "yb",
+      "label": "¹⁷¹Yb optical lattice clock",
+      "reference_frequency_hz": 518295836590863.6,
+      "bbr_sensitivity_per_k": 3.5e-17,
+      "performance": {
+        "field": {
+          "stability_1s": 5e-16,
+          "systematic_uncertainty": 1e-17,
+          "uptime_percent": 50,
+          "basis": "No transportable ¹⁷¹Yb field campaign is modelled; values are assumed equal to transportable ⁸⁷Sr clocks."
+        },
+        "laboratory": {
+          "stability_1s": 1e-16,
+          "systematic_uncertainty": 1.4e-18,
+          "uptime_percent": 90,
+          "basis": "Stationary ¹⁷¹Yb lattice clocks (NIST, 2017–2018): instability about 10⁻¹⁶ /√τ, systematic uncertainty 1.4 × 10⁻¹⁸."
+        },
+        "projected": {
+          "stability_1s": 1e-17,
+          "systematic_uncertainty": 1e-19,
+          "uptime_percent": 95,
+          "basis": "Assumption: a field clock about one order of magnitude better than today's best laboratory clocks. Not demonstrated."
+        }
+      }
+    },
+    {
+      "id": "al_ion",
+      "label": "²⁷Al⁺ quantum-logic ion clock",
+      "reference_frequency_hz": 1121015393207857.3,
+      "bbr_sensitivity_per_k": 5.1e-20,
+      "performance": {
+        "field": {
+          "stability_1s": 2e-15,
+          "systematic_uncertainty": 1e-17,
+          "uptime_percent": 50,
+          "basis": "Transportable ion clocks are under development; no field campaign is modelled. Values are assumed."
+        },
+        "laboratory": {
+          "stability_1s": 1.2e-15,
+          "systematic_uncertainty": 9.4e-19,
+          "uptime_percent": 90,
+          "basis": "Stationary ²⁷Al⁺ quantum-logic clock (NIST, 2019): instability 1.2 × 10⁻¹⁵ /√τ, systematic uncertainty 9.4 × 10⁻¹⁹."
+        },
+        "projected": {
+          "stability_1s": 3e-16,
+          "systematic_uncertainty": 1e-19,
+          "uptime_percent": 95,
+          "basis": "Assumption: a multi-ion field clock. Not demonstrated."
+        }
+      }
+    },
+    {
+      "id": "cs",
+      "label": "¹³³Cs microwave clock",
+      "reference_frequency_hz": 9192631770.0,
+      "bbr_sensitivity_per_k": 2.3e-16,
+      "performance": {
+        "field": {
+          "stability_1s": 1e-11,
+          "systematic_uncertainty": 5e-13,
+          "uptime_percent": 100,
+          "basis": "Commercial caesium-beam frequency standards: instability about 10⁻¹¹ /√τ, accuracy about 5 × 10⁻¹³."
+        },
+        "laboratory": {
+          "stability_1s": 1e-13,
+          "systematic_uncertainty": 2e-16,
+          "uptime_percent": 90,
+          "basis": "Caesium fountain primary standards: instability about 10⁻¹³ /√τ, systematic uncertainty about 2 × 10⁻¹⁶."
+        },
+        "projected": {
+          "stability_1s": 1e-13,
+          "systematic_uncertainty": 2e-16,
+          "uptime_percent": 90,
+          "basis": "No projection: microwave clocks are not expected to reach optical-clock performance, so fountain values are used."
+        }
+      }
+    }
+  ]
+}

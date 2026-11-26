@@ -1,0 +1,151 @@
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.scenePanel {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.sceneBox {
+  height: clamp(320px, 52vh, 560px);
+}
+
+.statusRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.inlineSelect {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.inlineSelect select {
+  min-height: 34px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-m);
+  background: var(--surface-raised);
+  font-size: 13px;
+}
+
+.completion {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-l);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-s);
+  animation: reveal 400ms var(--ease);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.completionHead {
+  display: grid;
+  gap: 4px;
+}
+
+.completionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 20px;
+}
+
+.completionTitle svg {
+  width: 20px;
+  height: 20px;
+  color: var(--good-ink);
+}
+
+.completionNote {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.estimates {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.estimates dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.estimates dd {
+  margin: 4px 0 0;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.ciLabel {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.analysisLink {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 14px;
+  border-radius: var(--radius-m);
+  background: var(--primary-bg);
+  color: var(--primary-ink);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.analysisLink svg {
+  width: 15px;
+  height: 15px;
+}
+
+.bottom {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (max-width: 1100px) {
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .estimates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .estimates {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sceneBox {
+    height: 320px;
+  }
+}

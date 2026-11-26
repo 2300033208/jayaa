@@ -1,0 +1,44 @@
+.layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.4fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.summary {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.heading {
+  font-size: 13px;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.readouts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.note {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  max-width: 90ch;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

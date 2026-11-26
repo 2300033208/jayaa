@@ -1,0 +1,151 @@
+{
+ "benchmarks": [
+  {
+   "id": "skytree-2020",
+   "title": "Tokyo Skytree: 450 m redshift with transportable optical lattice clocks",
+   "citation": "Takamoto, M. et al. Test of general relativity by a pair of transportable optical lattice clocks. Nature Photonics 14, 411–415 (2020); numbers as summarized by Shinkai, Takamoto & Katori, arXiv:2502.06104 (2025).",
+   "doi": "10.1038/s41566-020-0619-8",
+   "what_is_checked": "The engine's WGS84 normal-field potential difference for the clocks' laser-ranged height difference, against the redshift the clocks measured and the geodetic value.",
+   "rows": [
+    {
+     "quantity": "Redshift Δf/f₀ vs clock measurement",
+     "unit": "",
+     "engine": 4.933699685181477e-14,
+     "published": 4.93377907194e-14,
+     "published_sigma": 4.4896761e-18,
+     "difference": -7.938675852311481e-19,
+     "relative_difference": -1.6090456699736117e-05,
+     "z": -0.17682068094648257,
+     "criterion": "|z| < 2",
+     "passed": true,
+     "note": "Clock value (1 + α)·gΔh/c² with α = (1.4 ± 9.1) × 10⁻⁵."
+    },
+    {
+     "quantity": "Redshift Δf/f₀ vs geodetic gΔh/c²",
+     "unit": "",
+     "engine": 4.933699685181477e-14,
+     "published": 4.93371e-14,
+     "published_sigma": 1.4e-18,
+     "difference": -1.0314818523058211e-19,
+     "relative_difference": -2.0906819661184404e-06,
+     "z": -0.0736772751647015,
+     "criterion": "|z| < 2",
+     "passed": true,
+     "note": "The paper uses measured local gravity 9.797248 m/s²; the engine uses WGS84 normal gravity (9.797232 m/s² at mid-height), which here happens to agree to well within 10⁻¹⁸."
+    }
+   ]
+  },
+  {
+   "id": "modane-2018",
+   "title": "Fréjus tunnel (Modane) to Torino: first chronometric levelling with a transportable clock",
+   "citation": "Grotti, J. et al. Geodesy and metrology with a transportable optical clock. Nature Physics 14, 437–441 (2018); arXiv:1705.04089.",
+   "doi": "10.1038/s41567-017-0042-3",
+   "what_is_checked": "The engine's redshift relation and Sr reference frequency, converting the measured 47.92(83) Hz shift to a potential difference, against the paper's clock value and the independent geodetic determination.",
+   "rows": [
+    {
+     "quantity": "Potential difference ΔΦ vs paper's clock value",
+     "unit": "m²/s²",
+     "engine": 10033.909190604221,
+     "published": 10034.0,
+     "published_sigma": null,
+     "difference": -0.09080939577870595,
+     "relative_difference": -9.050169003259512e-06,
+     "z": null,
+     "criterion": "within ±0.5 m²/s² (rounding of the published value)",
+     "passed": true,
+     "note": ""
+    },
+    {
+     "quantity": "Uncertainty of ΔΦ vs paper",
+     "unit": "m²/s²",
+     "engine": 173.79266753342034,
+     "published": 174.0,
+     "published_sigma": null,
+     "difference": -0.20733246657965765,
+     "relative_difference": -0.00119156589988309,
+     "z": null,
+     "criterion": "within ±0.5 m²/s² (rounding of the published value)",
+     "passed": true,
+     "note": ""
+    },
+    {
+     "quantity": "Potential difference ΔΦ vs geodesy",
+     "unit": "m²/s²",
+     "engine": 10033.909190604221,
+     "published": 10032.1,
+     "published_sigma": 173.80003247520403,
+     "difference": 1.8091906042209303,
+     "relative_difference": 0.00018034016848126816,
+     "z": 0.010409610277138737,
+     "criterion": "|z| < 2",
+     "passed": true,
+     "note": "Geodetic value 10 032.1(16) m²/s² from GNSS, levelling and a refined geoid model."
+    }
+   ]
+  },
+  {
+   "id": "bondarescu-2012",
+   "title": "Buried sphere detectable by clocks (synthetic case)",
+   "citation": "Bondarescu, R. et al. Geophysical applicability of atomic clocks: direct continental geoid mapping. Geophysical Journal International 191, 78–82 (2012); arXiv:1209.2889.",
+   "doi": "10.1111/j.1365-246X.2012.05636.x",
+   "what_is_checked": "The engine's sphere potential and gravity for a 1.5 km radius sphere with 20 % density contrast (534 kg/m³) centred 2 km deep, and the minimum-radius relation.",
+   "rows": [
+    {
+     "quantity": "Peak potential perturbation ΔU",
+     "unit": "m²/s²",
+     "engine": 0.25192970115197005,
+     "published": 0.25,
+     "published_sigma": null,
+     "difference": 0.0019297011519700535,
+     "relative_difference": 0.007718804607880214,
+     "z": null,
+     "criterion": "within ±0.005 m²/s² (rounding of the published value)",
+     "passed": true,
+     "note": ""
+    },
+    {
+     "quantity": "Peak gravity anomaly Δg",
+     "unit": "mGal",
+     "engine": 12.596485057598503,
+     "published": 12.6,
+     "published_sigma": null,
+     "difference": -0.0035149424014964126,
+     "relative_difference": -0.00027896368265844547,
+     "z": null,
+     "criterion": "within ±0.05 mGal (rounding of the published value)",
+     "passed": true,
+     "note": ""
+    },
+    {
+     "quantity": "Smallest detectable radius at 45 km (ΔU = 0.2 m²/s²)",
+     "unit": "km",
+     "engine": 3.921049333340546,
+     "published": 4.0,
+     "published_sigma": null,
+     "difference": -0.07895066665945416,
+     "relative_difference": -0.01973766666486354,
+     "z": null,
+     "criterion": "within ±0.5 km (rounding of the published value)",
+     "passed": true,
+     "note": "Published as “a sphere of 4 km radius … down to 45 km depth”."
+    },
+    {
+     "quantity": "Redshift of 1 cm height",
+     "unit": "×10⁻¹⁸",
+     "engine": 1.091086649776597,
+     "published": 1.1,
+     "published_sigma": null,
+     "difference": -0.008913350223403116,
+     "relative_difference": -0.008103045657639196,
+     "z": null,
+     "criterion": "within ±0.05 ×10⁻¹⁸ (rounding of the published value)",
+     "passed": true,
+     "note": "g·Δh/c² ≈ 1.1 × 10⁻¹⁸ per cm (also stated by Shinkai, Takamoto & Katori 2025)."
+    }
+   ]
+  }
+ ],
+ "passed": 9,
+ "total": 9,
+ "method": "Published values recomputed with the engine's physics functions; no parameter is fitted."
+}

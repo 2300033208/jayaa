@@ -1,0 +1,258 @@
+.value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.unavailable {
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-style: italic;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  line-height: 16px;
+}
+
+.tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+}
+
+.tag[data-kind='measurement']::before {
+  background: var(--series-1);
+}
+
+.tag[data-kind='estimate']::before {
+  background: var(--series-2);
+}
+
+.tag[data-kind='truth']::before {
+  background: var(--truth);
+  border-radius: 1px;
+}
+
+.tag[data-kind='model']::before {
+  background: transparent;
+  border: 1.5px solid var(--ink-2);
+  width: 4px;
+  height: 4px;
+}
+
+.tag[data-kind='uncertainty']::before {
+  background: var(--series-2);
+  opacity: 0.35;
+}
+
+.tag[data-kind='config']::before,
+.tag[data-kind='derived']::before {
+  background: var(--ink-axis);
+}
+
+.readouts {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+/* The label takes the flexible top track and sits at its bottom, so values in one row of a
+   readout grid stay aligned even when one label (with its provenance tag) wraps. */
+.readout {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 2px;
+  min-width: 0;
+}
+
+.readout dt {
+  align-self: end;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.readout dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.readout.large dd {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.readout .detail,
+.readout.large .detail {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------------------ interval */
+
+.interval {
+  display: grid;
+  gap: 6px;
+}
+
+.intervalTrack {
+  position: relative;
+  height: 28px;
+}
+
+.intervalAxis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13px;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.intervalRange {
+  position: absolute;
+  top: 8px;
+  height: 11px;
+  border-left: 2px solid var(--series-2);
+  border-right: 2px solid var(--series-2);
+  background: color-mix(in srgb, var(--series-2) 18%, transparent);
+}
+
+.intervalPoint {
+  position: absolute;
+  top: 8px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
+  border-radius: 50%;
+  background: var(--series-2);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.intervalTruth {
+  position: absolute;
+  top: 2px;
+  height: 23px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--truth);
+}
+
+.intervalLabels {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.intervalLabels strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------------ chain */
+
+.chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.chainStep {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  flex: 1 1 0;
+  min-width: 128px;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-3);
+  border-top: 2px solid var(--line);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.chainStep[data-state='done'] {
+  border-top-color: var(--ink-2);
+}
+
+.chainStep[data-state='active'] {
+  border-top-color: var(--accent);
+}
+
+.chainStep a {
+  display: grid;
+  gap: 2px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.chainStep a:hover .chainLabel {
+  text-decoration: underline;
+}
+
+.chainLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.chainStep[data-state='pending'] .chainLabel {
+  color: var(--ink-3);
+}
+
+.chainValue {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.chainArrow {
+  position: absolute;
+  right: -6px;
+  top: -8px;
+  color: var(--ink-axis);
+  font-size: 12px;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .chainStep {
+    flex-basis: 45%;
+  }
+  .chainArrow {
+    display: none;
+  }
+}

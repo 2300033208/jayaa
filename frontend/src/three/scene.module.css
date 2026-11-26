@@ -1,0 +1,92 @@
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: var(--scene-bg);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.legend {
+  position: absolute;
+  left: var(--space-3);
+  bottom: var(--space-3);
+  display: grid;
+  gap: 4px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-m);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--ink-2);
+  max-width: calc(100% - 24px);
+  pointer-events: none;
+}
+
+.legendRamp {
+  width: 160px;
+  max-width: 100%;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.legendTicks {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.fallback {
+  display: grid;
+  place-content: center;
+  gap: var(--space-2);
+  text-align: center;
+  height: 100%;
+  min-height: 280px;
+  padding: var(--space-5);
+  border-radius: var(--radius-l);
+  background: var(--surface-sunken);
+  color: var(--ink-2);
+  font-size: 13px;
+}
+
+.fallback strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+/* ------------------------------------------------------------------ controls */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.sliderControl {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sliderControl input[type='range'] {
+  width: 96px;
+  accent-color: var(--ink);
+}
+
+.sliderValue {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  min-width: 56px;
+}

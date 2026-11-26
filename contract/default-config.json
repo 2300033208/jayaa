@@ -1,0 +1,62 @@
+{
+  "name": "Regional density anomaly · today's field clocks",
+  "environment": {
+    "earth_model": "wgs84",
+    "latitude_deg": 17.385,
+    "longitude_deg": 78.487,
+    "elevation_m": 540,
+    "terrain": "flat",
+    "terrain_relief_m": 0,
+    "terrain_model_id": null,
+    "terrain_density_kg_m3": 2670,
+    "terrain_density_assumed_kg_m3": 2670,
+    "tides": "modelled"
+  },
+  "bodies": [
+    {
+      "id": "body-1",
+      "anomaly_type": "dense",
+      "geometry": "sphere",
+      "density_contrast_kg_m3": 300,
+      "mass_kg": 640000000000000.0,
+      "depth_m": 10000,
+      "x_m": 3000,
+      "y_m": -2000
+    }
+  ],
+  "sensor": {
+    "mode": "local_reference",
+    "clock_species": "sr",
+    "performance_class": "field",
+    "reference_frequency_hz": 429228004229873.0,
+    "bbr_sensitivity_per_k": 7.3e-17,
+    "measurement_interval_s": 10000,
+    "stability_1s": 5e-16,
+    "systematic_uncertainty": 1e-17,
+    "uptime_percent": 50,
+    "reference_distance_km": 0
+  },
+  "noise": {
+    "measurement_noise": 1e-19,
+    "frequency_drift_per_hour": 1e-21,
+    "environmental_noise": 3e-19,
+    "temperature_fluctuation_k": 0.01,
+    "vibration_m": 0.0005,
+    "station_height_uncertainty_m": 0.01,
+    "seed": 20260926,
+    "tide_residual_percent": 2
+  },
+  "survey": {
+    "width_m": 40000,
+    "length_m": 40000,
+    "spacing_m": 5000,
+    "sensor_height_m": 1,
+    "setup_time_s": 14400,
+    "start_date": "2027-03-01",
+    "pattern": "serpentine"
+  },
+  "inversion": {
+    "source_count": 1,
+    "bootstrap_samples": 200
+  }
+}

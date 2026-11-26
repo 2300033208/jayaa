@@ -1,0 +1,454 @@
+<p class=title>Simulation Atomic Clock Based on Gravitational Sensing for Subsurface Mass</p>
+<p class=author>P. Jaivardhan</p>
+<p class=aff><i>Department of Electronics and Communication Engineering</i></p>
+<p class=aff><i>KLEF (Koneru Lakshmaiah Education Foundation)</i></p>
+<p class=aff>Vaddeswaram, Andhra Pradesh, India</p>
+<p class=abs><b><i>Abstract</i>&#x2014;In general relativity the rate of a clock depends on the gravity potential at its location. A buried body of anomalous density changes that potential, so a precise atomic clock can in principle sense it. This paper simulates such a survey. The model combines the weak-field gravitational redshift, a spherical subsurface mass, three assumed optical-clock classes, station height error, a matched-filter detector and a nonlinear least-squares inversion, with a gravimeter model for comparison. For the baseline target (radius 1.5 km, centre depth 2 km, density contrast 500 kg/m<sup>3</sup>) the peak fractional frequency shift is 2.62&#x202f;&#xd7;&#x202f;10<sup>&#x2212;18</sup>. With 49 stations and 10 h per station, detection probability at a 5% false-alarm rate is 6.6%, 26.3% and 99.7% for the field, advanced and future classes. For the future class, clock-only inversion has a median depth error of 907 m and mass error of 40%, against 3.4 m and 0.18% for the gravimeter. A real-time, time-domain simulation of the campaign adds tides, link outages and drift: the future class detects the target after a median of 11 days, but an unmodelled drift of 10<sup>&#x2212;19</sup> per day gives false detections in 99.7% of noise-only campaigns unless a trend is fitted. Clocks suit only large masses, as a long-wavelength complement to gravimetry. All results are from synthetic data; no clock hardware or field measurement is claimed.</b></p>
+<p class=kw><b><i>Index Terms</i>&#x2014;Atomic clock, gravitational redshift, chronometric geodesy, subsurface mass detection, gravity potential, Allan deviation, matched filter, inversion, simulation.</b></p>
+<h2>I. I<span class=sc>NTRODUCTION</span></h2>
+<h3><i>A.</i> <i>Motivation</i></h3>
+<p class=ni>Knowledge of what lies below the ground matters in resource exploration, groundwater studies, volcano monitoring, tunnelling and geodesy. A body that is denser or lighter than the surrounding rock, such as an ore deposit, a salt structure, an intrusion or a fluid reservoir, perturbs the gravity field above it. Gravimeters have used this fact for many decades by measuring the acceleration of free fall or its changes [18,20].</p>
+<p>An atomic clock offers a different observable. According to general relativity, a clock deeper in a gravitational potential ticks more slowly than one higher in the potential. Comparing two clocks therefore measures a <i>potential</i> <i>difference</i>, not an acceleration. This approach is known as chronometric levelling or relativistic geodesy [1–3]. Optical clocks have improved to the point where laboratory systems report fractional systematic uncertainties below 10<sup>−</sup><sup>18</sup> [11], and transportable systems have been taken into the field [6,8,15].</p>
+<h3><i>B.</i> <i>Problem Statement</i></h3>
+<p class=ni>The central question of this work is: <i>for</i> <i>what</i> <i>size</i> <i>and</i> <i>depth</i> <i>of buried mass,</i> <i>and with what clock performance and survey</i> <i>design, can atomic-clock frequency comparisons detect the body</i> <i>and estimate its properties?</i> The question is quantitative. The relativistic effect of a local geological body is extremely small, and a method that is correct in principle may still be impractical.</p>
+<h3><i>C.</i> <i>Objectives</i></h3>
+<p class=li>• O1: Build a forward model from buried mass to clock frequency shift.</p>
+<p class=li>• O2: Represent clock instability, flicker floor and station height error, and verify the generated noise.</p>
+<p class=li>• O3: Evaluate detection probability with a controlled false-alarm rate.</p>
+<p class=li>• O4: Estimate position, depth and excess mass and compare with a theoretical bound.</p>
+<p class=li>• O5: Study survey design, model error and disturbances, and compare with gravimetry.</p>
+<h3><i>D.</i> <i>Contributions and Scope</i></h3>
+<p class=ni>The work contributes a reproducible end-to-end simulation, a simple depth rule that shows when a clock can outperform a gravimeter, and a set of stress tests that expose failure cases. It does not build a clock, process real clock data or validate a field system. The clock classes are assumed scenarios chosen to span three levels of performance; they are not data sheets of particular instruments. The idea of sensing density anomalies with clocks is established in the literature, notably by Bondarescu<i> et al.</i> [4]; this paper does not claim it as new.</p>
+<h3><i>E.</i> <i>Paper Organisation</i></h3>
+<p class=ni>Section II reviews related work. Sections III and IV give the relativistic and clock theory, Section V the subsurface forward model, and Sections VI and VII noise and signal processing. Section VIII gives the simulation design, Section IX the results and Section X the discussion. Section XI runs the campaign in real time; Section XII concludes.</p>
+<h2>II. R<span class=sc>ELATED</span> W<span class=sc>ORK</span></h2>
+<p class=ni>The use of clocks to determine potential differences was proposed in the early 1980s [1,2]. The idea remained theoretical while clock uncertainty corresponded to height errors of many metres. Optical clocks changed this. Their transition frequencies are near 10<sup>14</sup>–10<sup>15</sup> Hz, which allows a much finer division of time than microwave standards [10,23]. Chou<i> et al.</i> observed the redshift from a height change of less than one metre [5], and Bothwell<i> et al.</i> resolved it across a millimetre-scale atomic sample [9].</p>
+<p class=fl><img src='p1_tab_1.png' width=468.00 height=182.24/></p>
+<p>For geodesy the comparison must work over distance. Reviews by Mehlstäubler<i> et al.</i> [3] and Delva and Lodewyck [14] describe clocks, frequency transfer and geodetic use. Denker <i>et al.</i> analysed how geodetic methods determine the reference redshift at the 10<sup>−</sup><sup>18</sup> level [13]. Lion<i> et al.</i> studied the value of clock data for high-resolution geopotential models [12]. Table I summarises the works most relevant here.</p>
+<h2>III. R<span class=sc>ELATIVISTIC</span> T<span class=sc>HEORY</span> <span class=sc>OF</span> <span class=sc>THE</span> M<span class=sc>EASUREMENT</span></h2>
+<h3><i>A.</i> <i>Proper Time in a Weak Field</i></h3>
+<p class=ni>In the weak-field, slow-motion limit appropriate for Earth, the rate of proper time<i> τ<sub>p</sub></i> of a clock relative to coordinate time<i> t</i> is</p>
+<p class=eq><img src='p1_eq_1.png' width=468.00 height=32.24/></p>
+<p class=ni>where<i> U</i> <i>&gt;</i> 0 is the Newtonian gravitational potential,<i> v</i> is the clock speed in a non-rotating frame and<i> c</i> is the speed of light. For clocks fixed on the rotating Earth, the velocity term combines with gravitation into the<i> gravity potential</i></p>
+<p class=eq><img src='p1_eq_2.png' width=468.00 height=20.90/></p>
+<p class=ni>with<i> ω<sub>E</sub></i> the rotation rate and <i>p</i> the distance from the rotation axis.</p>
+<h3><i>B.</i> <i>Origin of the Rate Relation</i></h3>
+<p class=ni>Equation (1) follows from the weak-field metric. To first order in<i> U/c</i><sup>2</sup> the line element is</p>
+<p class=eq><img src='p1_eq_3.png' width=468.00 height=30.64/></p>
+<p class=ni>A clock records proper time with<i> c</i><sup>2</sup><i>dτ<sub>p</sub></i><sup>2</sup> = −<i>ds</i><sup>2</sup>. Writing<i> v</i> = |<i>d</i><b>x</b><i>/dt</i>|,</p>
+<p class=eq><img src='p1_eq_4.png' width=468.00 height=38.49/></p>
+<p class=ni>Expanding the square root and neglecting terms of order <i>c</i><sup>−</sup><sup>4</sup> gives (1). The neglected terms are of order (<i>U/c</i><sup>2</sup>)<sup>2</sup> ≈ 5×10<sup>−</sup><sup>19</sup> for Earth’s own field. They are almost identical at neighbouring stations and largely cancel in a differential survey, but a full analysis at the highest accuracy should retain a consistent relativistic framework [13].</p>
+<p class=fl><img src='p1_tab_2.png' width=468.00 height=87.54/></p>
+<h3><i>C.</i> <i>Frequency Comparison of Two Clocks</i></h3>
+<p class=ni>For two identical stationary clocks, a rover at<i> B</i> and a reference at <i>A</i>, the fractional frequency difference after removing link effects is</p>
+<p class=eq><img src='p1_eq_5.png' width=468.00 height=26.47/></p>
+<p class=ni>The clock at larger<i> W</i>, that is deeper in the field, runs slower. Near the surface a height increase ∆<i>h</i> lowers<i> W</i> by about<i> g</i>∆<i>h</i>, giving ∆<i>ν/ν</i> ≃ +<i>g</i>∆<i>h/c</i><sup>2</sup>, or about 1<i>.</i>09×10<sup>−</sup><sup>16</sup> per metre. Table II places the buried-mass signal on this scale.</p>
+<h3><i>D.</i> <i>Separating the Anomaly From the Background</i></h3>
+<p class=ni>The measured potential can be written as</p>
+<p class=eq><img src='p1_eq_6.png' width=468.00 height=17.07/></p>
+<p class=ni>where<i> U<sub>n</sub></i> is the potential of a reference (normal) Earth, evaluated at the surveyed station position, and<i> T</i> is the disturbing potential. Terrain, regional geology, tides and the wanted local body all contribute to<i> T</i>. A real survey must remove everything except the target. In this simulation the background is assumed to be removed except for the terms explicitly tested: a constant offset, height noise, drift and a regional gradient.</p>
+<p>Table II shows why height must be known so well. The signal of the baseline body corresponds to a vertical movement of the clock of only about 2.4 cm. A survey cannot tell these two causes apart from frequency data alone; the height must come from an independent measurement. Satellite positioning combined with a geoid model contains the geoid itself, so heights from spirit levelling or another method that is independent of the target signal are conceptually needed.</p>
+<p class=fl><img src='p2_fig_3.png' width=468.00 height=113.51/></p>
+<p>A buried excess mass raises the nearby equipotential surfaces. The corresponding geoid height change follows Bruns’ relation <i>N</i> =<i> T/g</i> [19]. For the baseline body<i> N</i> is about 24 mm. A clock fixed to the ground senses this through<i> T</i>.</p>
+<h2>IV. A<span class=sc>TOMIC</span> C<span class=sc>LOCK</span> P<span class=sc>RINCIPLES</span></h2>
+<h3><i>A.</i> <i>Operating Principle</i></h3>
+<p class=ni>An atomic clock locks an oscillator to a transition between two energy levels of an atom, whose frequency is<i> ν</i><sub>0</sub> = ∆<i>E/h<sub>P</sub></i>, where <i>h<sub>P</sub></i> is Planck’s constant. In an optical lattice clock many neutral atoms are trapped in a standing light wave and probed by a narrow-linewidth laser. In a single-ion clock one trapped ion is used. The excitation fraction gives an error signal that steers the laser, and a frequency comb transfers the optical frequency to countable or comparable signals [10]. Fig. 1 shows the loop.</p>
+<h3><i>B.</i> <i>Two-Level Description of the Interrogation</i></h3>
+<p class=ni>Let Ω be the coupling (Rabi) frequency of the clock laser and <i>δ</i> = 2<i>π</i>(<i>ν<sub>L</sub></i> −<i>ν</i><sub>0</sub>) its detuning from the atomic transition. For a single pulse of duration<i> T<sub>p</sub></i> the probability of excitation is</p>
+<p class=eq><img src='p2_eq_7.png' width=468.00 height=33.10/></p>
+<p class=ni>The servo alternately probes both sides of the resonance and moves<i> ν<sub>L</sub></i> until the two excitation fractions are equal. The width of the resonance scales as 1<i>/T<sub>p</sub></i>, so a longer coherent interrogation gives a sharper frequency discriminator. Each cycle also contains dead time for cooling, preparation and detection; laser noise sampled during the cycle can then alias into the servo and raise the instability above (9).</p>
+<h3><i>C.</i> <i>Instability and the Allan Deviation</i></h3>
+<p class=ni>Clock noise is described by the Allan deviation [21]</p>
+<p class=eq><img src='p2_eq_8.png' width=468.00 height=23.09/></p>
+<p class=ni>where <i>y</i>¯<i><sub>k</sub></i> is the mean fractional frequency in the<i> k</i>-th interval of length<i> τ</i>. For atom-number-limited (quantum projection noise) operation with Ramsey-type interrogation [22],</p>
+<p class=eq><img src='p2_eq_9.png' width=468.00 height=34.27/></p>
+<p class=fl><img src='p2_tab_4.png' width=468.00 height=213.13/></p>
+<p class=ni>with interrogation time<i> T<sub>i</sub></i>, cycle time<i> T<sub>c</sub></i> and atom number<i> N<sub>a</sub></i>. Higher<i> ν</i><sub>0</sub>, longer interrogation and more atoms reduce instability. In practice laser noise often dominates, but the<i> τ</i><sup>−</sup><sup>1</sup><i><sup>/</sup></i><sup>2</sup> form still applies at long times.</p>
+<p>Averaging cannot improve the result indefinitely. Flicker noise and slowly varying systematic effects set a floor<i> σ<sub>f</sub></i> . This study uses</p>
+<p class=eq><img src='p2_eq_10.png' width=468.00 height=19.22/></p>
+<p class=ni>where<i> σ</i><sub>0</sub> is the white-frequency instability at 1 s of the complete two-clock comparison.</p>
+<h3><i>D.</i> <i>Instability Versus Accuracy</i></h3>
+<p class=ni>Instability tells how quickly noise averages down; systematic uncertainty tells how well all frequency shifts are known. A shift that is the same at every station cancels in the shape of a survey, because it only changes the common offset. A shift that changes from station to station does not cancel. Transport, temperature and magnetic environment can all cause such changes. Table III lists the principal effects.</p>
+<h3><i>E.</i> <i>Frequency Transfer</i></h3>
+<p class=ni>The two clocks must be compared with noise below that of the clocks. Phase-stabilised optical fibre can do this over long distances [16]. Free-space and satellite links are alternatives with different noise properties. In the model, residual link noise is taken to be included in<i> σ</i><sub>0</sub> and<i> σ<sub>f</sub></i> ; this is an idealisation for a field survey, where installing a fibre to each station may not be possible.</p>
+<h2>V. S<span class=sc>UBSURFACE</span> M<span class=sc>ASS</span> F<span class=sc>ORWARD</span> M<span class=sc>ODEL</span></h2>
+<h3><i>A.</i> <i>Field Equation</i></h3>
+<p class=ni>Outside and inside matter the potential obeys Poisson’s equation, ∇<sup>2</sup><i>T</i> = −4<i>πG</i>∆<i>ρ</i>(<b>x</b>) with the sign convention used here, and its solution for a bounded anomaly is</p>
+<p class=eq><img src='p2_eq_11.png' width=468.00 height=32.81/></p>
+<p class=fl><img src='p3_fig_5.png' width=468.00 height=151.28/></p>
+<p class=ni>Equation (11) is linear, so several bodies simply add. It is also the basis of the point-mass sum used for non-spherical targets.</p>
+<h3><i>B.</i> <i>Buried Sphere</i></h3>
+<p class=ni>Consider a sphere of radius<i> R</i> and density contrast ∆<i>ρ</i> whose centre is at (<i>x</i><sub>0</sub><i>,y</i><sub>0</sub>) and depth<i> z</i><sub>0</sub><i> &gt; R</i>. Outside the sphere it acts as a point mass</p>
+<p class=eq><img src='p3_eq_12.png' width=468.00 height=18.19/></p>
+<p class=ni>At a surface station (<i>x,y</i>) the distance to the centre is <i>r</i> = √(<i>x</i>−<i>x</i><sub>0</sub>)<sup>2</sup> +(<i>y</i>−<i>y</i><sub>0</sub>)<sup>2</sup> +<i>z</i><sup>2</sup><sub>0</sub>, and</p>
+<p class=eq><img src='p3_eq_13.png' width=468.00 height=31.47/></p>
+<p class=ni>The reference clock is assumed far enough away that its remaining share of<i> T</i> is a constant, which is absorbed in the offset<i> b</i>. Fig. 2 shows the geometry.</p>
+<h3><i>C.</i> <i>Worked Example</i></h3>
+<p class=ni>For the baseline, ∆<i>M</i> = <sup>4</sup><sub>3</sub><i>π</i>(1500)<sup>3</sup>(500) = 7<i>.</i>07×10<sup>12</sup> kg. Directly above the centre <i>r</i> =<i> z</i><sub>0</sub> = 2000 m, so <i>T</i> =<i> G</i>∆<i>M/z</i><sub>0</sub> = 0<i>.</i>236 m<sup>2</sup>/s<sup>2</sup>. Dividing by <i>c</i><sup>2</sup> gives 2<i>.</i>62 × 10<sup>−</sup><sup>18</sup>. The gravity anomaly there is<i> T/z</i><sub>0</sub> = 1<i>.</i>18×10<sup>−</sup><sup>4</sup> m/s<sup>2</sup>, or 11.8 mGal, and the equivalent height change <i>T/g</i> is 24 mm. The clock must therefore resolve a few parts in 10<sup>19</sup> to map the shape of the anomaly rather than merely notice it.</p>
+<h3><i>D.</i> <i>Gravity Anomaly of the Same Body</i></h3>
+<p class=ni>The vertical component of the extra acceleration is</p>
+<p class=eq><img src='p3_eq_14.png' width=468.00 height=30.42/></p>
+<p class=ni>Dividing potential by gravity gives</p>
+<p class=eq><img src='p3_eq_15.png' width=468.00 height=33.21/></p>
+<p class=ni>which equals<i> z</i><sub>0</sub> directly above the centre. In principle one co-located pair of measurements at the peak therefore gives the depth of a compact body.</p>
+<h3><i>E.</i> <i>Spatial Width and Wavenumber View</i></h3>
+<p class=ni>From (13), the profile falls to half its peak at a total width of 2√3<i>z</i><sub>0</sub>. From (14) the corresponding width is 2√2<sup>2</sup><i><sup>/</sup></i><sup>3</sup> −1<i>z</i><sub>0</sub> ≈ 1<i>.</i>53<i>z</i><sub>0</sub>. For the baseline the computed widths are 6.90 km and 3.05 km. In the horizontal-wavenumber domain, for a thin mass layer<i> µ</i>(<i>k</i>) at depth<i> z</i><sub>0</sub> [18],</p>
+<p class=eq><img src='p3_eq_16.png' width=468.00 height=30.42/></p>
+<p class=ni>The potential carries an extra factor 1<i>/k</i>. A clock therefore emphasises broad, long-wavelength structure and is weak at separating nearby features.</p>
+<h3><i>F.</i> <i>When Can a Clock Compete With a Gravimeter?</i></h3>
+<p class=ni>Let <i>σ<sub>c</sub></i> be the clock noise in fractional frequency and <i>σ<sub>g</sub></i> the gravimeter noise. The ratio of single-station signal-to-noise ratios above the body is</p>
+<p class=eq><img src='p3_eq_17.png' width=468.00 height=31.63/></p>
+<p class=ni>It exceeds one only if</p>
+<p class=eq><img src='p3_eq_18.png' width=468.00 height=33.10/></p>
+<p class=ni>With<i> σ<sub>g</sub></i> = 20<i> µ</i>Gal and the 10 h noise levels of Section VI,<i> z</i><sup>∗</sup> is about 5103 km for C1, 853 km for C2 and 246 km for C3. These depths are far greater than the exploration targets considered here. This rule assumes independent white noise at a single station; it ignores the correlated terrain and regional errors of both methods.</p>
+<h3><i>G.</i> <i>Non-Uniqueness</i></h3>
+<p class=ni>Outside a uniform sphere only ∆<i>M</i> appears, so<i> R</i> and ∆<i>ρ</i> cannot be separated by any exterior measurement. More generally, potential-field data admit many density distributions [18]. Depth and mass estimates are meaningful only with an assumed source shape or independent geological information.</p>
+<h2>VI. N<span class=sc>OISE</span> M<span class=sc>ODEL</span></h2>
+<h3><i>A.</i> <i>Environmental Signals</i></h3>
+<p class=ni>Several natural effects change the potential at a station with time. The solid Earth tide moves the ground vertically by a few decimetres and changes the potential, ocean and atmospheric loading add smaller deformations, and groundwater changes alter the local mass. Parts of these effects are common to nearby clocks and cancel, and parts can be modelled, but their residuals are comparable in scale with the signal sought. This study assumes ideal correction except where a drift term is applied explicitly.</p>
+<h3><i>B.</i> <i>Station Measurement Model</i></h3>
+<p class=ni>Each station measurement is</p>
+<p class=eq><img src='p3_eq_19.png' width=468.00 height=31.43/></p>
+<p class=fl><img src='p4_tab_6.png' width=468.00 height=97.52/></p>
+<p class=ni>with</p>
+<p class=eq><img src='p4_eq_20.png' width=468.00 height=28.58/></p>
+<p class=ni>The last term is the uncertainty <i>σ<sub>h</sub></i> of the station height: any height error appears as a false potential change. Each millimetre contributes about 1<i>.</i>09×10<sup>−</sup><sup>19</sup>. The three assumed classes are listed in Table IV.</p>
+<p>The noise is taken as independent between stations. In particular the flicker floor is treated as a fresh random value at each new setup. Real campaigns can have correlated errors; Section IX tests two simple forms.</p>
+<h2>VII. D<span class=sc>ETECTION</span> <span class=sc>AND</span> I<span class=sc>NVERSION</span> M<span class=sc>ETHODS</span></h2>
+<h3><i>A.</i> <i>Hypotheses</i></h3>
+<p class=ni>Detection is a choice between</p>
+<p class=eq><img src='p4_eq_21.png' width=468.00 height=33.84/></p>
+<p class=ni>The unknown offset is removed by subtracting the mean from the data and from every template. If<b> P</b> denotes this projection, the matched filter for a known signal [24] is</p>
+<p class=eq><img src='p4_eq_22.png' width=468.00 height=32.95/></p>
+<p class=ni>with signal-to-noise ratio<i> ρ<sub>s</sub></i> = ∥<b>Ps</b>∥<i>/σ</i> and</p>
+<p class=eq><img src='p4_eq_23.png' width=468.00 height=19.08/></p>
+<p class=ni>where<i> Q</i> is the Gaussian tail probability.</p>
+<h3><i>B.</i> <i>Search Over Unknown Position</i></h3>
+<p class=ni>In practice the position and depth are unknown. A bank of 1445 templates covers a 17×17 grid of horizontal positions within ±4 km and five depths from 1 to 4.5 km. The test statistic is the largest matched-filter output. Searching many templates raises the noise-only maximum, so the threshold (2.93) is set empirically from 20 000 noise-only trials. An independent set of 20 000 trials gave a false-alarm rate of 4.98%. The sign of the anomaly is assumed positive.</p>
+<h3><i>C.</i> <i>Inversion</i></h3>
+<p class=ni>The unknowns<i> θ</i> = (<i>x</i><sub>0</sub><i>,y</i><sub>0</sub><i>,z</i><sub>0</sub><i>,</i>∆<i>M,b</i>) are found by minimising</p>
+<p class=eq><img src='p4_eq_24.png' width=468.00 height=36.15/></p>
+<p class=ni>with bounded trust-region least squares, restarted from three trial depths. The bounds are |<i>x</i><sub>0</sub>|<i>,</i>|<i>y</i><sub>0</sub>| ≤ 6 km, 0<i>.</i>2 ≤ <i>z</i><sub>0</sub> ≤ 10 km and 10<sup>11</sup> ≤ ∆<i>M</i> ≤ 10<sup>15</sup> kg. For joint inversion, gravity residuals divided by <i>σ<sub>g</sub></i> are appended. Estimates that reach a depth or mass bound are counted and reported rather than discarded.</p>
+<h3><i>D.</i> <i>Nuisance Terms</i></h3>
+<p class=ni>Slow disturbances can be included in the model as linear terms,</p>
+<p class=eq><img src='p4_eq_25.png' width=468.00 height=26.34/></p>
+<p class=ni>where the columns of <b>A</b> = [<i>a<sub>ik</sub></i>] are a constant, optionally the visit order (drift) or the station coordinates (regional gradient). Because<i> β<sub>k</sub></i> enter linearly, they can be eliminated by applying the projector<b> I</b>−<b>A</b>(<b>A</b><sup>T</sup><b>A</b>)<sup>−</sup><sup>1</sup><b>A</b><sup>T</sup> to both data and model before the nonlinear fit.</p>
+<h3><i>E.</i> <i>Cramér–Rao Lower Bound</i></h3>
+<p class=ni>For Gaussian noise the Fisher information is<b> F</b> =<b> J</b><sup>T</sup><b>J</b>, where<b> J</b> holds derivatives of the noise-normalised model, and any unbiased estimator obeys cov(<i>θ</i>ˆ) ⪰ <b>F</b><sup>−</sup><sup>1</sup> [24]. The bound is computed numerically at the true parameters. Bounded or biased estimators need not obey it, so it is a guide, not a strict limit, when the data are weak.</p>
+<h3><i>F.</i> <i>Algorithm Summary</i></h3>
+<p class=ni>The steps of one Monte Carlo experiment are:</p>
+<p class=li>1. Compute noise-free station values from the source model.</p>
+<p class=li>2. Compute the station noise level from (20).</p>
+<p class=li>3. Draw independent Gaussian noise and add the constant offset and any test disturbance.</p>
+<p class=li>4. Evaluate the template-bank statistic and compare it with the stored threshold.</p>
+<p class=li>5. Start the least-squares fit at the most anomalous station with three trial depths and keep the lowest cost.</p>
+<p class=li>6. Record position, depth, mass and whether a bound was reached.</p>
+<p class=li>7. Repeat, then report medians and the fraction of bound hits.</p>
+<p class=ni>Medians are used because estimates that reach a bound produce a long-tailed, non-Gaussian distribution.</p>
+<h3><i>G.</i> <i>Processing Chain</i></h3>
+<p class=ni>Fig. 3 shows the full chain.</p>
+<h2>VIII. S<span class=sc>IMULATION</span> D<span class=sc>ESIGN</span></h2>
+<h3><i>A.</i> <i>Architecture</i></h3>
+<p class=ni>The simulator is written in Python with NumPy, SciPy and Matplotlib. Its modules are shown in Fig. 4. Table V gives the baseline settings, whose target size follows the example discussed by Bondarescu<i> et al.</i> [4].</p>
+<h3><i>B.</i> <i>Experiments</i></h3>
+<p class=ni>Table IV defines the noise levels used in all experiments. Detection curves use 4000 trials per mass value, with 20 000 for the baseline. Inversion statistics use 300 trials for the main comparison and 200 for the sensitivity studies. A constant offset of 3×10<sup>−</sup><sup>18</sup> is added to clock data in the main inversion tests. The 49-station campaign at 10 h per station needs about 20.4 days of averaging, excluding transport and setup.</p>
+<p class=fl><img src='p5_fig_7.png' width=468.00 height=250.56/></p>
+<p class=fl><img src='p5_fig_8.png' width=468.00 height=73.69/></p>
+<p class=fl><img src='p5_tab_9.png' width=468.00 height=150.13/></p>
+<h3><i>C.</i> <i>Non-Spherical Targets</i></h3>
+<p class=ni>To test model error, an oblate and an elongated ellipsoid with the same excess mass and centre are represented by point masses on a regular internal grid. A sphere is then fitted to their signals.</p>
+<h2>IX. R<span class=sc>ESULTS</span></h2>
+<h3><i>A.</i> <i>Forward Signal</i></h3>
+<p class=ni>The baseline excess mass is 7<i>.</i>07×10<sup>12</sup> kg. Its peak clock signal is 2<i>.</i>62×10<sup>−</sup><sup>18</sup> and its peak gravity anomaly is 11.8 mGal. Fig. 5 shows that the clock profile is much broader than the gravity profile, and Fig. 6 shows the map sampled by the survey. Fig. 7 confirms (15): the ratio reaches the true depth only above the centre.</p>
+<p class=fl><img src='p5_fig_10.png' width=468.00 height=257.18/></p>
+<p class=fl><img src='p5_fig_11.png' width=468.00 height=217.31/></p>
+<h3><i>B.</i> <i>Geological Case Studies</i></h3>
+<p class=ni>Table VI applies the forward model to a range of idealised targets. All sizes, depths and contrasts are assumed round values, each body is a sphere, and the SNR is for a single station above the centre after 10 h. Negative contrasts reverse the sign of the anomaly; magnitudes are listed. Cavities and compact ore bodies give clock signals far below any of the assumed noise levels, although several of them give gravity anomalies well above 20 <i>µ</i>Gal. Only bodies with radii of kilometres approach or exceed an SNR of one. Real geology of this size is rarely a compact sphere, so the larger entries are indicative only.</p>
+<p class=fl><img src='p6_tab_12.png' width=468.00 height=121.20/></p>
+<p class=fl><img src='p6_fig_13.png' width=468.00 height=185.21/></p>
+<p class=fl><img src='p6_fig_14.png' width=468.00 height=194.89/></p>
+<p>Fig. 8 compares the signals of the three equal-mass shapes used later. The differences are modest compared with the C3 noise, which is why shape cannot be recovered from these data.</p>
+<p class=fl><img src='p6_fig_15.png' width=468.00 height=203.57/></p>
+<p class=fl><img src='p6_tab_16.png' width=468.00 height=174.69/></p>
+<h3><i>C.</i> <i>Noise Verification</i></h3>
+<p class=ni>Time series of 2<sup>21</sup> samples at 1 s were generated with white and flicker components. Their overlapping Allan deviation agrees closely with (10) at short and intermediate times (Fig. 9, Table VII). At long averaging times fewer independent intervals exist, so a single realisation scatters more about the model.</p>
+<p>Fig. 10 shows that C1 stays above the signal even after very long averaging because of its floor. Table VIII and Fig. 11 give the budget at 10 h: C1 is limited by its floor, while C2 and C3 still benefit from longer averaging.</p>
+<p class=fl><img src='p7_fig_17.png' width=468.00 height=192.17/></p>
+<p class=fl><img src='p7_tab_18.png' width=468.00 height=87.12/></p>
+<p class=fl><img src='p7_fig_19.png' width=468.00 height=171.05/></p>
+<h3><i>D.</i> <i>Detectability Limits</i></h3>
+<p class=ni>Because the signal falls only as 1<i>/z</i><sub>0</sub> (Fig. 12), depth is not the main obstacle; the small amplitude is. At 2 km depth, a single-station SNR of 3 needs a radius of at least 3.53 km, 1.94 km and 1.28 km for C1–C3 at the assumed density contrast. A radius larger than 2 km at this depth would break the surface, so the C1 value is not physically realisable. Fig. 13 and Table IX show the wider parameter space. Small cavities, tunnels and pipes are many orders of magnitude below these masses.</p>
+<h3><i>E.</i> <i>Detection Performance</i></h3>
+<p class=ni>Using all 49 stations together gives matched-filter SNR values of 0.26, 1.54 and 5.35. Figs. 14 and 15 and Table X show the outcome. C1 is barely better than guessing. C2 detects the baseline body only occasionally when the position is unknown. C3 detects it reliably. The gap between the known-template curve and the search curve is the price of not knowing where to look.</p>
+<p class=fl><img src='p7_fig_20.png' width=468.00 height=192.15/></p>
+<p class=fl><img src='p7_fig_21.png' width=468.00 height=230.72/></p>
+<p class=fl><img src='p7_tab_22.png' width=468.00 height=76.22/></p>
+<h3><i>F.</i> <i>Dependence on Depth, Contrast and Time</i></h3>
+<p class=ni>Fig. 16 keeps the mass fixed and moves the body deeper. C3 loses reliability beyond about 3 km. Fig. 17 shows that longer integration helps C2 considerably but cannot rescue C1, whose floor dominates. Table XI varies the density contrast at the baseline size and depth: weak contrasts are hard to detect even with C3.</p>
+<p class=fl><img src='p8_tab_23.png' width=468.00 height=97.86/></p>
+<p class=fl><img src='p8_fig_24.png' width=468.00 height=209.93/></p>
+<p class=fl><img src='p8_fig_25.png' width=468.00 height=209.06/></p>
+<h3><i>G.</i> <i>Parameter Inversion</i></h3>
+<p class=ni>Table XII and Fig. 18 report inversion results. For C2 the data carry almost no depth information and most solutions end on a bound; its error figures mainly reflect the bounds and starting values. C3 locates the body to a median 601 m horizontally, but depth and mass remain poor (907 m and 40%), with 13% of trials on a bound. Depth, mass and offset can be traded against one another: a deeper, heavier body plus a different offset gives nearly the same pattern.</p>
+<p class=fl><img src='p8_fig_26.png' width=468.00 height=196.47/></p>
+<p class=fl><img src='p8_fig_27.png' width=468.00 height=198.45/></p>
+<p class=fl><img src='p8_tab_28.png' width=468.00 height=108.68/></p>
+<p>Fig. 19 is a deliberately unedited single example. The curve passes through the data, yet the fitted depth is 4.0 km and the mass is 2.7 times the true value. A good-looking fit is not evidence of a correct model.</p>
+<p>The gravimeter, with its far larger SNR, gives median errors of 3.7 m horizontally, 3.4 m in depth and 0.18% in mass. Adding C3 clock data changes these very little (Table XII). For the gravimeter the observed scatter is close to the bound (Table XIII). The result is optimistic for both methods because terrain and geological noise are absent.</p>
+<p class=fl><img src='p9_tab_29.png' width=468.00 height=85.93/></p>
+<p class=fl><img src='p9_fig_30.png' width=468.00 height=231.60/></p>
+<p class=fl><img src='p9_fig_31.png' width=468.00 height=202.25/></p>
+<p class=fl><img src='p9_tab_32.png' width=468.00 height=86.09/></p>
+<p class=fl><img src='p9_tab_33.png' width=468.00 height=96.69/></p>
+<p class=fl><img src='p9_tab_34.png' width=468.00 height=85.93/></p>
+<h3><i>H.</i> <i>Parameter Correlations</i></h3>
+<p class=ni>Table XIV gives the correlation matrix implied by the Fisher information for C3. Depth, mass and offset are very strongly correlated, with coefficients between 0.87 and 0.98, while horizontal position is nearly independent of them. This explains why the body can be located on the map far more reliably than it can be sized.</p>
+<h3><i>I.</i> <i>Value of a Known Offset</i></h3>
+<p class=ni>If the offset <i>b</i> were known independently, for instance from a well-determined tie between reference and survey area, the C3 results would improve to 643 m, 418 m and 7.5% (Table XV). This is the largest single improvement found, and it shows that the reference tie deserves as much care as the clock. The known-offset case is idealised: it assumes zero uncertainty in<i> b</i>.</p>
+<h3><i>J.</i> <i>Survey Design</i></h3>
+<p class=ni>More stations improve both SNR and accuracy at the cost of campaign time (Fig. 20, Table XVI). Where median depth errors equal 1800 m, many solutions sit on the 200 m lower bound, so those entries indicate failure rather than a precise value. Table XVII shows that survey width involves a trade-off: a narrow grid does not see the signal fall away, which confuses it with the offset, while a very wide grid places few stations near the body.</p>
+<h3><i>K.</i> <i>Robustness to Disturbances</i></h3>
+<p class=ni>Table XIX is the most important caution in this study. A drift that changes by 2 ×10<sup>−</sup><sup>18</sup> across the campaign, applied in station-visit order, or a regional gradient of 1 × 10<sup>−</sup><sup>19</sup> per km drives the median solution to the depth bound. Both disturbances are comparable with or smaller than the signal itself and are absent from the fitted model. Extra height error and a few outliers also degrade the result strongly. A practical system would need repeated visits to a base station, joint drift and trend estimation, and outlier-resistant fitting. The first two ideas are examined next in simplified form.</p>
+<p class=fl><img src='p10_fig_35.png' width=468.00 height=191.79/></p>
+<p class=fl><img src='p10_tab_36.png' width=468.00 height=96.53/></p>
+<p class=fl><img src='p10_tab_37.png' width=468.00 height=96.53/></p>
+<h3><i>L.</i> <i>Remedy:</i> <i>Fitting the Disturbance</i></h3>
+<p class=ni>Table XVIII applies (26). Its undisturbed row differs somewhat from the nominal rows of other tables because each study uses its own random draws; differences of this size are sampling variation. When the fitted nuisance term has the same form as the disturbance, performance returns to roughly the nominal level. A drift fit does not help against a spatial gradient, and a gradient fit costs some horizontal accuracy even when no gradient exists. The remedy therefore works only if the form of the disturbance is correctly anticipated; real disturbances need not be linear. Visiting the stations in random order instead of row by row, without fitting a drift, lowered the median horizontal error from 3438 m to 2049 m, but 63% of solutions still reached a bound, so randomising alone is not sufficient.</p>
+<p class=fl><img src='p10_fig_38.png' width=468.00 height=257.18/></p>
+<h3><i>M.</i> <i>Effect of Source Shape</i></h3>
+<p class=ni>Table XX shows that a sphere fitted to a flattened or elongated body of equal mass is biased even without noise: depth is overestimated and so is mass. With C3 noise, random error is larger than this shape bias.</p>
+<h3><i>N.</i> <i>Resolution of Two Bodies</i></h3>
+<p class=ni>Two spheres, each with half the baseline mass, are separated horizontally in Fig. 21. Gravity shows two distinct peaks at separations where the clock profile is still a single broad hump or has only a shallow dip. This is the 1<i>/k</i> smoothing predicted in Section V.</p>
+<h3><i>O.</i> <i>Verification of the Forward Model</i></h3>
+<p class=ni>The analytic expression (13) was compared with a sum over point masses filling the sphere. The largest relative difference over all 49 stations is 2<i>.</i>8×10<sup>−</sup><sup>6</sup> (Table XXI, values in units of 10<sup>−</sup><sup>18</sup>). This verifies the numerical implementation; it is not a validation against nature.</p>
+<h2>X. D<span class=sc>ISCUSSION</span></h2>
+<h3><i>A.</i> <i>What the Results Mean</i></h3>
+<p class=ni>The relativistic principle is sound, and the simulation shows that a sufficiently good clock can detect a large buried mass. The practical margin, however, is very small. For the baseline target only the future class gives reliable detection, and even then parameter estimates are weak unless the offset is controlled.</p>
+<h3><i>B.</i> <i>Time-Variable Mass at a Fixed Pair of Sites</i></h3>
+<p class=ni>A different use is to watch one site for a change in subsurface mass, for example fluid moving into or out of a reservoir. Because the clock is not moved, the setup height error does not enter the difference between two epochs. If each epoch has independent noise<i> σ<sub>e</sub></i><sup>2</sup> =<i> σ</i><sub>0</sub><sup>2</sup><i>/τ</i> +<i>σ</i><sup>2</sup><i><sub>f</sub></i> , the smallest change at depth<i> z</i><sub>0</sub> with SNR of 3 is</p>
+<p class=eq><img src='p11_eq_26.png' width=468.00 height=37.04/></p>
+<p class=ni>Fig. 22 evaluates this for<i> z</i><sub>0</sub> = 2 km. With 100 days per epoch the limits are about 1<i>.</i>1×10<sup>14</sup>, 1<i>.</i>1×10<sup>13</sup> and 1<i>.</i>2×10<sup>12</sup> kg for C1– C3. The last is about one sixth of the baseline excess mass. This is an analytic estimate, not a time-series simulation: it assumes stable station height, ideal tide and loading correction and no clock drift between epochs. Ground deformation would be a serious confounder, since 1 mm of uplift changes the frequency by 1<i>.</i>09×10<sup>−</sup><sup>19</sup>.</p>
+<p class=fl><img src='p11_tab_39.png' width=468.00 height=139.16/></p>
+<p class=fl><img src='p11_tab_40.png' width=468.00 height=90.45/></p>
+<p class=fl><img src='p11_tab_41.png' width=468.00 height=86.09/></p>
+<h3><i>C.</i> <i>Comparison With Gravimetry</i></h3>
+<p class=ni>Table XXII compares the two observables. For compact, shallow targets the gravimeter is far superior. The case for clocks rests on measuring potential directly and on sensitivity to broad structure, including slow time changes of large masses, as suggested for geodynamic monitoring [17]. Section XI-G simulates such a time-varying source.</p>
+<p class=fl><img src='p11_fig_42.png' width=468.00 height=194.47/></p>
+<h3><i>D.</i> <i>Where a Clock Could Add Value</i></h3>
+<p class=ni>Three directions follow from the theory, though none is demonstrated here: monitoring a fixed pair of sites over long periods, where setup-dependent errors do not change between visits; constraining the long-wavelength part of a regional model while gravimeters supply the detail [12]; and providing an independent height-system tie in areas where levelling errors accumulate [3].</p>
+<p class=fl><img src='p11_tab_43.png' width=468.00 height=70.36/></p>
+<p class=fl><img src='p12_tab_44.png' width=468.00 height=117.95/></p>
+<p class=fl><img src='p12_fig_45.png' width=468.00 height=121.38/></p>
+<h3><i>E.</i> <i>Conceptual Field System</i></h3>
+<p class=ni>Fig. 23 sketches how a future field system might be arranged. It is a concept only. Each block carries an open problem: keeping systematic shifts stable after transport, providing a low-noise link to a moving site, measuring height independently and scheduling visits so that drift can be separated from signal.</p>
+<h3><i>F.</i> <i>Questions Likely at a Project Review</i></h3>
+<p class=ni><i>Why not simply use a gravimeter?</i> For this target one should; the simulation shows it is far more precise. <i>Then</i> <i>why</i> <i>study</i> <i>clocks?</i> They measure potential, which responds differently to depth and scale, and their performance is still improving. <i>Can it</i> <i>find a tunnel or a small cavity?</i> No; the mass is many orders of magnitude too small. <i>Is any hardware included?</i> No; the work is a software study.</p>
+<h3><i>G.</i> <i>Limitations</i></h3>
+<p class=li>• Synthetic data only; no clock, link or field measurement.</p>
+<p class=li>• Clock classes are assumed, not measured instrument specifications.</p>
+<p class=li>• Flat surface; no terrain, layering or neighbouring geology.</p>
+<p class=li>• Tides, ocean and atmospheric loading and groundwater changes assumed perfectly removed outside Section XI.</p>
+<p class=li>• Noise independent between stations; link noise not modelled separately (relaxed in Section XI).</p>
+<p class=li>• A single baseline geometry for most inversion studies.</p>
+<p class=li>• Source shape assumed spherical during inversion.</p>
+<p class=li>• Template search assumes a positive density contrast and a limited depth range.</p>
+<p class=fl><img src='p12_tab_46.png' width=468.00 height=170.73/></p>
+<h3><i>H.</i> <i>Ethical and Reporting Considerations</i></h3>
+<p class=ni>Because the signals are weak, it would be easy to present favourable single realisations. This paper reports repeated trials, bound hits and failed cases. Simulated detection must not be described as discovery of any real structure.</p>
+
+<h2>XI. R<span class=sc>EAL</span>-T<span class=sc>IME</span> C<span class=sc>AMPAIGN</span> S<span class=sc>IMULATION</span></h2>
+<p class=ni>Section IX treats every station as one number with an independent Gaussian error and processes the 49
+numbers together after the survey has ended. A real campaign produces something different: a frequency comparison
+that runs for about 24 days, changes with the tides, stops when the link drops out and is read while the
+clock is still in the field. This section simulates that record sample by sample and processes it as it arrives.
+It covers Stage 2 of the road map in Table XXIII. The data are still synthetic. The script
+<span class=code>realtime_sim.py</span> uses fixed seeds and reproduces every number below.</p>
+
+<h3>A. Time-Domain Measurement Model</h3>
+<p class=ni>During the session at station <i>i</i> the rover-minus-reference comparison is modelled as</p>
+<img src='eq33.svg' width=468.0 height=33.0/>
+<p class=ni>where <i>s<sub>i</sub></i> is the body signal of (13), <i>b</i> the reference offset, <i>d</i> a slow
+relative drift, &#x394;&#x3a6;<sub>tide</sub> the difference of the tidal potential between the two clock sites,
+<i>n</i><sub>w</sub> and <i>n</i><sub>f</sub> white and flicker frequency noise and <i>&#x3b4;h<sub>i</sub></i> the
+height error of the <i>i</i>-th setup. Noise levels and height errors are those of Table IV. Two things differ from
+Section VI. The flicker noise is now one continuous record over the whole campaign, generated by the method of
+Appendix E, so neighbouring stations have errors that are correlated in time instead of drawn afresh at each setup.
+Its overlapping Allan deviation stays within 0.8% of the floor between 1 h and 72 h. The clock also spends
+2 h moving between the 10 h sessions, so a 49-station survey lasts 24.4 days.</p>
+<p>The tidal term uses the Sun and Moon model of the project's simulation engine: low-precision ephemerides, the
+degree-2 tidal potential and the factor 1&#x202f;+&#x202f;<i>k</i><sub>2</sub>&#x202f;&#x2212;&#x202f;<i>h</i><sub>2</sub>
+&#x202f;=&#x202f;0.694 that a clock on the elastic Earth sees. The survey centre is put at 16.44&#xb0;&#x202f;N,
+80.62&#xb0;&#x202f;E, which only fixes the tidal geometry, and the reference clock 100 km to the north-east.
+A tide model removes 95% of the difference; the remaining 5% stands for ocean loading and model error. Link outages
+follow a two-state Markov chain with outages on average 6 h apart and 15 min long, which loses about 4% of the
+data. The drift, when present, is 10<sup>&#x2212;19</sup> per day, about
+2.4&#x202f;&#xd7;&#x202f;10<sup>&#x2212;18</sup> over the campaign.
+Table XXIV lists the settings.</p><p class=fl><img src='new_t24.png' width=468.00 height=199.30/></p>
+
+<h3>B. Processing as the Data Arrive</h3>
+<p class=ni>Data arrive in packets: 10 s long in the single campaign of Section XI-C and 5 min long in the Monte
+Carlo runs, where the white noise of a packet is drawn as its exact average. Each packet updates a running mean for
+the current station after the tide model has been subtracted. When the clock leaves a station, its value and the
+uncertainty from (20), with the time actually recorded in place of 10 h, are frozen and two updates follow. The
+template-bank statistic (23) is recomputed over the stations visited so far, with each station weighted by
+1/<i>&#x3c3;</i><sub><i>i</i></sub> and the nuisance columns of (26) projected out: a constant and, where stated, a linear
+trend in time. From the 12th station on, the inversion of Section VII-C is also repeated.</p>
+<p>Testing after every station raises the false-alarm rate, because there are now 41 looks
+(<i>k</i>&#x202f;=&#x202f;9,&#x2026;,49) instead of one. The thresholds are therefore set jointly. For a common
+level <i>&#x3b1;</i>&#x2032;,</p>
+<img src='eq34.svg' width=468.0 height=17.6/>
+<p class=ni>where <i>F<sub>k</sub></i> is the distribution of the statistic after <i>k</i> stations under
+<i>H</i><sub>0</sub>. The level <i>&#x3b1;</i>&#x2032; is found by bisection on 3000 noise-only campaigns of the same
+noise model, and the false-alarm rate is then measured on another 3000. It came out between
+4.4% and 6.1% for the six combinations of clock class and visit order. As a
+check of the code, a single look at all 49 stations under the batch model of Section IX gives a threshold of
+2.92, against 2.93 in Section VII-B.</p>
+<p>Two visit orders are compared. The serpentine order walks the grid row by row. The coarse-first order visits
+the 16 stations of a 4 km grid and then fills in the other 33. Neither uses any knowledge of where the body is.</p>
+<p>In Python on a laptop CPU, one packet takes 0.3 &#xb5;s and a station update (1445
+templates and three inversion starts) takes a median of 46 ms and at most
+94 ms. A station cycle lasts 12 h, so the computation is not a constraint on real-time
+use.</p>
+
+<h3>C. One Campaign as It Unfolds</h3>
+<p class=ni>Figs. 24&#x2013;26 follow one C3 campaign with the coarse-first order, all disturbances (scenario S7
+below) and a start on 7 February 2027. Fig. 24 shows the station nearest the body. Single 10 s packets scatter by
+about 3&#x202f;&#xd7;&#x202f;10<sup>&#x2212;17</sup>, more than ten times the signal, and the running mean needs
+several hours to settle inside its 1<i>&#x3c3;</i> band. In Fig. 25 the station values follow the rising offset-plus-drift
+line and dip near the body. The tide correction leaves a residual of a few parts in 10<sup>20</sup>.</p><p class=fl><img src='new_f24.png' width=468.00 height=292.15/></p><p class=fl><img src='new_f25.png' width=468.00 height=251.98/></p>
+<p>The live maps of Fig. 26 are what an analyst would have seen. After the 16 coarse stations the fit is
+meaningless and sits on the depth bound. The statistic crossed its threshold at station 28,
+on day 13.7, and by then the fitted centre was already close to the true one. At the end of the
+campaign the horizontal error was 319 m, the depth error 665 m and
+the mass error 20%. These are the values of one realisation; the distributions follow.</p><p class=fl><img src='new_f26.png' width=468.00 height=202.98/></p>
+
+<h3>D. Detection During the Campaign</h3>
+<p class=ni>Fig. 27 gives the cumulative detection probability against campaign time. By the end of the survey C3
+detects the body in 97.2% of campaigns with the serpentine order and in 98.5%
+with the coarse-first order. The median detection day is 9.9 for the serpentine order and
+10.9 for coarse-first, because the coarse grid samples the whole area early. C2 reaches only
+9.1% (serpentine) and 13.8% (coarse-first),
+and C1 stays near the 5% budget. The end values are below the single-look results of Table X (26.3% and 99.7%) for two reasons: the
+thresholds must cover 41 looks, and the continuous flicker noise lets the station errors drift together.</p><p class=fl><img src='new_f27.png' width=468.00 height=227.19/></p>
+<p>Fig. 28 tracks the inversion. With the coarse-first order and time-domain noise (S1), the median horizontal
+error is 1.7 km after 16 stations and 738 m
+after 49; with the serpentine order it starts from 4.5 km, because the first
+two rows lie far from the body. The median depth error stays at the bound-limited 1.8 km until 35 stations
+have been processed. Depth only becomes informative once the survey covers both the peak and the fall-off of the
+anomaly, in line with the half-width study of Table XVII.</p><p class=fl><img src='new_f28.png' width=468.00 height=290.53/></p>
+
+<h3>E. Disturbances in the Time Domain</h3>
+<p class=ni>Table XXV runs 1000 campaigns per scenario for detection and 300 for the final inversion, all with C3
+and the serpentine order. The false-alarm column is measured on noise-only campaigns that contain the same
+disturbance, with the thresholds designed for undisturbed noise. Scenario S0 repeats the batch model of Section IX
+and agrees with Table XII to within the Monte Carlo scatter. Time-domain noise (S1) lowers detection from
+99.5% to 97.7% and raises the share of fits on a bound from
+15% to 20%, because correlated flicker noise no longer averages
+out between stations. Link outages (S2) remove about 4% of the data and lower detection to
+95.5%.</p>
+<p>The tide matters less than its raw size suggests. Over a 10 h session the uncorrected tide difference to a
+reference 100 km away averages to 2.2&#x202f;&#xd7;&#x202f;10<sup>&#x2212;19</sup> RMS, well under the C3 noise of 5.5&#x202f;&#xd7;&#x202f;10<sup>&#x2212;19</sup>,
+so leaving it uncorrected (S3) raises the false-alarm rate only to 6.1%. A drift is different. At
+10<sup>&#x2212;19</sup> per day it is smaller than the noise of one station, yet with only an offset
+in the model (S5) it produced a false detection in 99.7% of noise-only campaigns and pushed the
+inversion to its depth bound. A slow trend across a survey looks like the broad potential anomaly the template bank
+searches for. Fitting a linear trend in time (S6) brings the false-alarm rate back to 5.1% and the
+errors back near S1, at the price of later detection. With every disturbance present and the trend fitted (S7), C3
+still detects 97.6% of bodies. Its false-alarm rate of 6.2% is slightly above the
+design value because the thresholds were calibrated on undisturbed noise. Calibrating them on noise that includes
+outages and tide residuals is the obvious remedy; it was not run here. Unlike the visit-order drift of Table XVIII, this drift is fitted against the recorded
+time, which the processing chain knows exactly.</p><p class=fl><img src='new_t25.png' width=468.00 height=150.90/></p>
+
+<h3>F. Tides and Session Length</h3>
+<p class=ni>Fig. 29 shows the RMS of the session-mean tide difference against the distance to the reference clock.
+It grows almost linearly with distance. At 500 km the 10 h value is 1.1&#x202f;&#xd7;&#x202f;10<sup>&#x2212;18</sup>, above the C3 noise, so a
+distant reference needs a tide model. A session of 12.42 h, one M<sub>2</sub> period, lowers the error by
+14% compared with 10 h, and 24.84 h by
+39%. The diurnal and fortnightly parts do not average out, so
+matching the session to the tidal period is a useful habit but no substitute for a model.</p><p class=fl><img src='new_f29.png' width=468.00 height=218.50/></p>
+
+<h3>G. Monitoring a Changing Mass</h3>
+<p class=ni>Section X-B gave the analytic limit (27) for a fixed pair of clocks. Here it is tested with an hourly
+time series that contains white noise, continuous flicker noise and the 5% tide residual. In real time the
+statistic</p>
+<img src='eq35.svg' width=468.0 height=35.2/>
+<p class=ni>compares the mean of the last <i>&#x3c4;</i>&#x202f;=&#x202f;100 days with the first 100 days, and a
+detection is declared when <i>Z</i>&#x202f;&gt;&#x202f;3. The left panel of Fig. 30 shows a C3 example in which the mass grows by
+3&#x202f;&#xd7;&#x202f;10<sup>12</sup> kg between days 150 and 300 at 2 km depth. The statistic crossed 3 on day
+303, when the mass had grown by 3.0&#x202f;&#xd7;&#x202f;10<sup>12</sup> kg.</p><p class=fl><img src='new_f30.png' width=468.00 height=240.43/></p>
+<p>For two back-to-back epochs the simulated detection probability follows (27) closely (Fig. 30, right). The
+scatter of the epoch difference is 0.98 times the value assumed in (27) for C3, and the simulated
+detection probability at &#x394;<i>M</i><sub>min</sub> is 50%, as expected for an SNR
+of 3. When the epochs are separated, the flicker noise keeps wandering in between: after a gap of one year the
+scatter is 1.42 times larger for C3 and 1.46 times larger for C2, and
+&#x394;<i>M</i><sub>min</sub> grows by the same factor (Table XXVI). Eq. (27) therefore holds for continuous monitoring, but it is optimistic for repeat
+campaigns months apart.</p><p class=fl><img src='new_t26.png' width=468.00 height=103.80/></p>
+
+<h2>XII. C<span class=sc>ONCLUSION</span> A<span class=sc>ND</span> F<span class=sc>UTURE</span> W<span class=sc>ORK</span></h2>
+<p class=ni>A complete simulation of atomic-clock gravitational sensing of subsurface mass was developed. The peak
+signal of a 1.5 km radius body at 2 km depth is 2.62&#x202f;&#xd7;&#x202f;10<sup>&#x2212;18</sup>, equivalent to a
+height change of about 2.4 cm. Over 49 stations, detection probability was 6.6%, 26.3% and 99.7% for the three
+clock classes at a 5% false-alarm rate. Inversion was weak with clocks alone, strongly dependent on the reference
+offset and fragile against unmodelled drift and regional trends unless matching nuisance terms are fitted. A
+simulated gravimeter was much more precise for this target, in agreement with the depth rule (18).</p>
+<p>The real-time simulation of Section XI adds three findings. Jointly set thresholds keep the false-alarm rate
+near 5% across 41 looks, and the C3 clock then detects the baseline body after a median of
+10.9 days with a coarse-first visit order. An unmodelled drift of
+10<sup>&#x2212;19</sup> per day causes a false detection in 99.7% of noise-only
+campaigns, while fitting a trend in time removes the problem. For monitoring, (27) holds for back-to-back epochs,
+but a one-year gap raises the smallest detectable mass change by about 42% for C3.
+Clock sensing should therefore be regarded as a complementary, long-wavelength method for large masses.</p>
+<p>Future work follows Table XXIII. Stage 2 is now covered in simulation; ocean loading near the coast, seasonal
+ground motion and correlated link noise are the next additions to the time-domain model, followed by richer
+geology and terrain, measured clock data and finally controlled experiments.</p>
+<h2>A<span class=sc>PPENDIX</span> A<span class=sc>.</span> S<span class=sc>YMBOLS</span></h2>
+<p class=ni>Table XXVII defines the main symbols.</p>
+
+<p class=fl><img src='p13_tab_47.png' width=468.00 height=171.43/></p>
+<h2>A<span class=sc>PPENDIX</span> B. R<span class=sc>EPRODUCIBILITY</span></h2>
+<p class=ni>The forward model, noise generator, detector, inversion and main plots are in sim.py; the known-offset study is in extra.py; the sweeps, correlation and nuisance-term studies are in more.py; the case studies and monitoring estimate are in cases.py. Fixed random seeds starting from 2026 are used. Running sim.py writes all numerical results to results.json and all graphs to the fig folder.</p>
+<h2>A<span class=sc>PPENDIX</span> C. D<span class=sc>ERIVATIONS</span></h2>
+<h3><i>A.</i> <i>Potential of a Uniform Sphere</i></h3>
+<p class=ni>By symmetry the field of a uniform sphere is radial. Applying Gauss’s theorem to (11) on a spherical surface of radius<i> r &gt; R</i> gives</p>
+<p class=eq><img src='p13_eq_27.png' width=468.00 height=27.74/></p>
+<p class=ni>Integrating with<i> T</i> → 0 at infinity yields<i> T</i> =<i> G</i>∆<i>M/r</i>. Differentiating with respect to height, with the centre at depth<i> z</i><sub>0</sub>, gives (14).</p>
+<h3><i>B.</i> <i>Matched Filter With Unknown Offset</i></h3>
+<p class=ni>For Gaussian noise the log-likelihood is proportional to −∥<b>y</b>− <b>s</b> − <i>b</i><b>1</b>∥<sup>2</sup><i>/</i>2<i>σ</i><sup>2</sup>. Maximising over <i>b</i> gives <i>b</i>ˆ equal to the mean residual, which is the same as applying <b>P</b> =<b> I</b> − <b>11</b><sup>T</sup><i>/n</i>. The log-likelihood ratio between<i> H</i><sub>1</sub> and<i> H</i><sub>0</sub> is then</p>
+<p class=eq><img src='p13_eq_28.png' width=468.00 height=33.10/></p>
+<p class=ni>The first term is the only data-dependent part. Normalised by ∥<b>Ps</b>∥<i>/σ</i> it has unit variance, zero mean under<i> H</i><sub>0</sub> and mean<i> ρ<sub>s</sub></i> under<i> H</i><sub>1</sub>, which gives (24).</p>
+<h3><i>C.</i> <i>Model Derivatives</i></h3>
+<p class=ni>With<i> s</i> = −<i>k</i>∆<i>M/r</i>,<i> k</i> =<i> G/c</i><sup>2</sup>, the derivatives used in the Fisher matrix are</p>
+<p class=eq><img src='p13_eq_29.png' width=468.00 height=61.02/></p>
+<p class=ni>The derivative for <i>y</i><sub>0</sub> has the same form as for <i>x</i><sub>0</sub>. The code evaluates these by central differences.</p>
+<h2>A<span class=sc>PPENDIX</span> D. C<span class=sc>ORE</span> S<span class=sc>IMULATION</span> C<span class=sc>ODE</span></h2>
+<p class=ni>The essential forward and detection functions are listed below.</p>
+<p class=fl><img src='p13_code_48.png' width=241.12 height=190.41/></p>
+<h2>A<span class=sc>PPENDIX</span> E. F<span class=sc>LICKER</span>-F<span class=sc>LOOR</span> G<span class=sc>ENERATION</span></h2>
+<p class=ni>For one-sided power spectral density<i> S<sub>y</sub></i>(<i>f</i>) =<i> h</i><sub>−</sub><sub>1</sub><i>/ f</i>, the Allan variance is independent of<i> τ</i>:</p>
+<p class=eq><img src='p13_eq_30.png' width=468.00 height=19.68/></p>
+<p class=ni>Therefore<i> h</i><sub>−</sub><sub>1</sub> =<i> σ</i><sup>2</sup><i><sub>f</sub></i> <i>/</i>(2ln2). The noise is synthesised by shaping complex Gaussian values in the frequency domain with amplitude proportional to <i>f</i><sup>−</sup><sup>1</sup><i><sup>/</sup></i><sup>2</sup>, setting the zero-frequency term to zero and applying an inverse Fourier transform.</p>
+<h2>R<span class=sc>EFERENCES</span></h2>
+<p class=ref>[1] M. Vermeer, “Chronometric levelling,”<i> Rep. Finnish Geodetic Inst.</i>, no. 83:2, 1983.</p>
+<p class=ref>[2] A. Bjerhammar, “On a relativistic geodesy,” <i>Bull.</i> <i>Géod.</i>, vol. 59, pp. 207–220, 1985.</p>
+<p class=ref>[3] T. E. Mehlstäubler, G. Grosche, C. Lisdat, P. O. Schmidt, and H. Denker, “Atomic clocks for geodesy,”<i> Rep. Prog. Phys.</i>, vol. 81, 064401, 2018.</p>
+<p class=ref>[4] R. Bondarescu, M. Bondarescu, G. Hetényi, L. Boschi, P. Jetzer, and J. Balakrishna, “Geophysical applicability of atomic clocks: direct continental geoid mapping,”<i> Geophys. J. Int.</i>, vol. 191, pp. 78–82, 2012.</p>
+<p class=ref>[5] C. W. Chou, D. B. Hume, T. Rosenband, and D. J. Wineland, “Optical clocks and relativity,”<i> Science</i>, vol. 329, pp. 1630–1633, 2010.</p>
+<p class=ref>[6] J. Grotti <i>et</i> <i>al.</i>, “Geodesy and metrology with a transportable optical clock,”<i> Nat. Phys.</i>, vol. 14, pp. 437–441, 2018.</p>
+<p class=ref>[7] W. F. McGrew<i> et al.</i>, “Atomic clock performance enabling geodesy below the centimetre level,”<i> Nature</i>, vol. 564, pp. 87–90, 2018.</p>
+<p class=ref>[8] M. Takamoto<i> et al.</i>, “Test of general relativity by a pair of transportable optical lattice clocks,”<i> Nat. Photonics</i>, vol. 14, pp. 411–415, 2020.</p>
+<p class=ref>[9] T. Bothwell <i>et</i> <i>al.</i>, “Resolving the gravitational redshift across a millimetre-scale atomic sample,”<i> Nature</i>, vol. 602, pp. 420–424, 2022.</p>
+<p class=ref>[10] A. D. Ludlow, M. M. Boyd, J. Ye, E. Peik, and P. O. Schmidt, “Optical atomic clocks,”<i> Rev. Mod. Phys.</i>, vol. 87, pp. 637–701, 2015.</p>
+<p class=ref>[11] M. C. Marshall<i> et al.</i>, “High-stability single-ion clock with 5<i>.</i>5×10<sup>−</sup><sup>19</sup> systematic uncertainty,”<i> Phys. Rev. Lett.</i>, vol. 135, 033201, 2025.</p>
+<p class=ref>[12] G. Lion, I. Panet, P. Wolf, C. Guerlin, S. Bize, and P. Delva, “Determination of a high spatial resolution geopotential model using atomic clock comparisons,”<i> J. Geod.</i>, vol. 91, pp. 597–611, 2017.</p>
+<p class=ref>[13] H. Denker<i> et al.</i>, “Geodetic methods to determine the relativistic redshift at the level of 10<sup>−</sup><sup>18</sup> in the context of international timescales: a review and practical results,”<i> J. Geod.</i>, vol. 92, pp. 487–516, 2018.</p>
+<p class=ref>[14] P. Delva and J. Lodewyck, “Atomic clocks: new prospects in metrology and geodesy,”<i> Acta Futura</i>, vol. 7, pp. 67–78, 2013.</p>
+<p class=ref>[15] I. Nosske<i> et al.</i>, “Transportable optical atomic clock for geodesy at the centimeter height level,” EGU General Assembly, Vienna, EGU26-13866, 2026.</p>
+<p class=ref>[16] C. Lisdat<i> et al.</i>, “A clock network for geodesy and fundamental science,” <i>Nat. Commun.</i>, vol. 7, 12443, 2016.</p>
+<p class=ref>[17] Y. Tanaka and H. Katori, “Exploring potential applications of optical lattice clocks in a plate subduction zone,”<i> J. Geod.</i>, vol. 95, 2021.</p>
+<p class=ref>[18] R. J. Blakely, <i>Potential</i> <i>Theory</i> <i>in</i> <i>Gravity</i> <i>and</i> <i>Magnetic</i> <i>Applications</i>. Cambridge Univ. Press, 1995.</p>
+<p class=ref>[19] W. A. Heiskanen and H. Moritz,<i> Physical Geodesy</i>. W. H. Freeman, 1967.</p>
+<p class=ref>[20] W. Torge and J. Müller,<i> Geodesy</i>, 4th ed. De Gruyter, 2012.</p>
+<p class=ref>[21] D. W. Allan, “Statistics of atomic frequency standards,”<i> Proc. IEEE</i>, vol. 54, pp. 221–230, 1966.</p>
+<p class=ref>[22] W. M. Itano<i> et al.</i>, “Quantum projection noise: population fluctuations in two-level systems,”<i> Phys. Rev. A</i>, vol. 47, pp. 3554–3570, 1993.</p>
+<p class=ref>[23] F. Riehle,<i> Frequency Standards:</i> <i>Basics and Applications</i>. Wiley-VCH, 2004.</p>
+<p class=ref>[24] S. M. Kay, <i>Fundamentals</i> <i>of</i> <i>Statistical</i> <i>Signal</i> <i>Processing:</i> <i>Detection</i> <i>Theory</i>. Prentice Hall, 1998.</p>

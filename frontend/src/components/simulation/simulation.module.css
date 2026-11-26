@@ -1,0 +1,256 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-raised);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.badge[data-tone='info'] svg,
+.badge[data-tone='info'] .dot {
+  color: var(--accent);
+}
+
+.badge[data-tone='good'] svg {
+  color: var(--good-ink);
+}
+
+.badge[data-tone='warning'] svg {
+  color: var(--warning-ink);
+}
+
+.badge[data-tone='critical'] {
+  border-color: var(--critical);
+}
+
+.badge[data-tone='critical'] svg {
+  color: var(--critical-ink);
+}
+
+.dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  opacity: 0;
+  animation: pulse 1.6s var(--ease) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.spin {
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progress {
+  display: grid;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.progressTrack {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 999px;
+  transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease);
+}
+
+.progressFill[data-tone='critical'] {
+  background: var(--critical);
+}
+
+.progressFill[data-tone='muted'] {
+  background: var(--ink-axis);
+}
+
+/* ------------------------------------------------------------------ timeline */
+
+.timeline {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.stages {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.stageBar {
+  width: 100%;
+  height: 3px;
+  background: var(--line);
+  position: relative;
+}
+
+.stageBar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.stage[data-state='done'] {
+  color: var(--ink-2);
+}
+
+.stage[data-state='done'] .stageBar {
+  background: var(--ink-2);
+}
+
+.stage[data-state='done'] .stageBar::after {
+  background: var(--ink-2);
+}
+
+.stage[data-state='active'] {
+  color: var(--ink);
+}
+
+.stage[data-state='active'] .stageBar {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--line) 100%);
+}
+
+.stage[data-state='active'] .stageBar::after {
+  background: var(--accent);
+}
+
+.stage[data-state='stopped'] {
+  color: var(--critical-ink);
+}
+
+.stage[data-state='stopped'] .stageBar::after {
+  background: var(--critical);
+}
+
+.phaseMessage {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.connection {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.connection svg {
+  width: 13px;
+  height: 13px;
+}
+
+.connection[data-tone='good'] svg {
+  color: var(--good-ink);
+}
+
+.connection[data-tone='warning'] svg {
+  color: var(--warning-ink);
+}
+
+.connection[data-tone='critical'] {
+  color: var(--critical-ink);
+}
+
+@media (max-width: 560px) {
+  /* Five stages must fit ~70 px columns: sentence case, no tracking. */
+  .stage {
+    font-size: 10.5px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+.runStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.runStatus svg {
+  width: 14px;
+  height: 14px;
+  color: var(--ink-axis);
+}
+
+.runStatus[data-tone='good'] svg {
+  color: var(--good-ink);
+}
+
+.runStatus[data-tone='info'] svg {
+  color: var(--accent);
+}
+
+.runStatus[data-tone='warning'] svg {
+  color: var(--warning-ink);
+}
+
+.runStatus[data-tone='critical'] svg {
+  color: var(--critical-ink);
+}

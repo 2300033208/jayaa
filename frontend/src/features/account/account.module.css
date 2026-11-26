@@ -1,0 +1,106 @@
+.screen {
+  min-height: 100dvh;
+  display: grid;
+  place-items: start center;
+  padding: 10vh 16px 48px;
+  background: var(--page);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.brandMark {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+}
+
+.brandMark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.title {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.lead,
+.note {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.form > button {
+  justify-self: start;
+}
+
+.formError {
+  font-size: 13px;
+  color: var(--critical-ink);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  font-size: 13px;
+}
+
+.details dt {
+  color: var(--ink-3);
+}
+
+.details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.narrow {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 460px;
+}
+
+.narrow > button {
+  justify-self: start;
+}
+
+.success {
+  font-size: 13px;
+  color: var(--good-ink);
+}

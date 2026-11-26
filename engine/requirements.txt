@@ -1,0 +1,15 @@
+# Engine runtime (versions tested together; Python 3.11+)
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+numpy==1.26.4
+scipy==1.17.1
+pydantic==2.6.1
+matplotlib==3.10.8
+SQLAlchemy==2.0.43
+alembic==1.16.5
+argon2-cffi==23.1.0
+python-multipart==0.0.20
+tifffile==2026.3.3
+imagecodecs==2024.9.22
+# PostgreSQL driver (used when DATABASE_URL is a postgresql:// URL)
+psycopg[binary]==3.3.6
