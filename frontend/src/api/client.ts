@@ -104,7 +104,7 @@ async function attempt<T>(path: string, parse: Parser<T>, options: RequestOption
 
     let response: Response
     try {
-      response = await fetch(apiUrl(path), { method, headers, body, signal: controller.signal, credentials: 'same-origin' })
+      response = await fetch(apiUrl(path), { method, headers, body, signal: controller.signal, credentials: 'include' })
     } catch {
       if (controller.signal.aborted) throw aborted()
       throw new ApiError('network', ENGINE_UNAVAILABLE, { code: 'network' })

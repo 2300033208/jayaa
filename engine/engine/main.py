@@ -102,8 +102,28 @@ class SecurityMiddleware:
             return
         headers = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope.get("headers", [])}
         path: str = scope.get("path", "")
-        if path.startswith("/api/") and scope.get("method") in UNSAFE_METHODS:
-            cfg: Settings = scope["app"].state.settings
+        method: str = scope.get("method", "")
+        origin: str = headers.get("origin", "")
+        cfg: Settings = scope["app"].state.settings
+        cross_origin = bool(origin and not origin_allowed(None, headers.get("host"), cfg.allowed_origins)
+                            or origin and origin_allowed(origin, headers.get("host"), cfg.allowed_origins))
+        origin_ok = bool(origin and origin_allowed(origin, headers.get("host"), cfg.allowed_origins))
+
+        # Handle CORS preflight (OPTIONS) for API routes from allowed origins
+        if method == "OPTIONS" and path.startswith("/api/") and origin_ok:
+            cors_headers = [
+                (b"access-control-allow-origin", origin.encode("latin-1")),
+                (b"access-control-allow-credentials", b"true"),
+                (b"access-control-allow-methods", b"GET, POST, PUT, DELETE, OPTIONS"),
+                (b"access-control-allow-headers", b"content-type, x-requested-with, idempotency-key"),
+                (b"access-control-max-age", b"600"),
+                (b"vary", b"Origin"),
+            ]
+            await send({"type": "http.response.start", "status": 200, "headers": cors_headers})
+            await send({"type": "http.response.body", "body": b""})
+            return
+
+        if path.startswith("/api/") and method in UNSAFE_METHODS:
             if headers.get(auth.CSRF_HEADER.lower()) != auth.CSRF_VALUE:
                 await self._reject(send, 403, "csrf_rejected",
                                    "The request was refused because it did not come from this application.")
@@ -130,6 +150,10 @@ class SecurityMiddleware:
                 extra = list(SECURITY_HEADERS)
                 if path.startswith("/api/"):
                     extra.append((b"cache-control", b"no-store"))
+                    if origin_ok:
+                        extra.append((b"access-control-allow-origin", origin.encode("latin-1")))
+                        extra.append((b"access-control-allow-credentials", b"true"))
+                        extra.append((b"vary", b"Origin"))
                 else:
                     extra.append((b"content-security-policy", CONTENT_SECURITY_POLICY.encode()))
                 message = {**message, "headers": [*message.get("headers", []), *extra]}
