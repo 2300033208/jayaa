@@ -1,0 +1,2 @@
+var e={screen:`_screen_pebez_1`,card:`_card_pebez_9`,brand:`_brand_pebez_20`,brandMark:`_brandMark_pebez_30`,title:`_title_pebez_51`,lead:`_lead_pebez_56`,note:`_note_pebez_57`,form:`_form_pebez_62`,formError:`_formError_pebez_71`,details:`_details_pebez_76`,narrow:`_narrow_pebez_93`,success:`_success_pebez_103`};export{e as t};
+//# sourceMappingURL=account.module-Blp2frx2.js.map

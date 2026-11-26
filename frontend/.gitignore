@@ -1,6 +1,2 @@
-node_modules
-dist
-test-results
-playwright-report
-coverage
-e2e-logs
+# Commit the built frontend so Render can serve it without needing Node.js
+!dist

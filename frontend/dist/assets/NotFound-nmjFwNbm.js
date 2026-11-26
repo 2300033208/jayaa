@@ -1,0 +1,2 @@
+import{t as e}from"./jsx-runtime-BNakU3Ej.js";import{B as t,r as n}from"./index-mricUcKo.js";import{n as r,t as i}from"./Page-BLyKQZzW.js";import{t as a}from"./pages.module-Cg5bMs3-.js";var o=e();function s(){return(0,o.jsxs)(i,{label:`Page not found`,children:[(0,o.jsx)(r,{title:`Page not found`}),(0,o.jsx)(n,{title:`This page does not exist.`,message:`The address may be mistyped, or the item it pointed to was deleted.`,actions:(0,o.jsx)(t,{className:a.primaryLink,to:`/`,children:`Go to start`})})]})}export{s as default};
+//# sourceMappingURL=NotFound-nmjFwNbm.js.map
